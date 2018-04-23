@@ -129,5 +129,9 @@ class Cooldown
 		
 			
 		}
+	public: void Reset()
+			{
+					m_cldwn = *localtime(&rawtime);
+			}
 
 };
