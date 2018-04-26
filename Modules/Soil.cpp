@@ -1,3 +1,6 @@
+/*
+this is just a litte test programm
+*/
 #pragma once
 #include <iostream>
 #include <wiringPi.h>
@@ -12,6 +15,7 @@ int main(int argn, char *argv[])
 	HConfig config;
 	config.HandleSetup();
 
+	// print out the pin setup for the MCP3008 analog-to-digital converter
 	cout<<"SOIL_RELAY_PIN: "<<config.getSOIL_RELAY_PIN()<<endl;
 	cout<<"MCP_CS_PIN: "<<config.getMCP_CS_PIN()<<endl;
 	cout<<"MCP_MISO_PIN: "<<config.getMCP_MISO_PIN()<<endl;

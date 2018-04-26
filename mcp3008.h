@@ -56,7 +56,7 @@ int ReadAnalogData(int channel, int clkPin, int MOSIpin, int MISOpin, int csPin)
 		
 	}
 
-	//short pause for the mp3008
+	//short pause for the mcp3008
 	delay(500);
 
 	return value;

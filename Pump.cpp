@@ -1,3 +1,10 @@
+/*
+This program is called by the main programm to water the plants
+
+Args:
+argv[1] is the watering amount
+
+*/
 #pragma once
 #include <wiringPi.h>
 #include <iostream>

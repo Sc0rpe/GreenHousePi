@@ -1,3 +1,8 @@
+/*
+This program is for reading values from the photoconductive resistor
+It is only for testing purposes
+*/
+
 #include <iostream>
 #include <wiringPi.h>
 #include <cstdlib>
