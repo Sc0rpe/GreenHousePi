@@ -62,7 +62,7 @@ private:
 	
 	//RTC relevant values
 	bool USE_RTC;
-	bool RTC_ALTHOUGH_CONNECTED;
+	bool RTC_ALTHOUGH_CONNECTED; //retrieve the time from RTC although connected to the internet
 
 	//log relevant values
 	bool LOG_ACTIVE;
@@ -117,18 +117,31 @@ public:
 		ReadFromAsciFile(path);
 	}
 
-	void HandleSetup()
+	/*
+	* This function takes care of the initialization of the config
+	* At first it searches for a local user config. After that it will fall back to the global one.
+	*/
+	bool HandleSetup()
 	{
 		if(!this->initialized)
 		{
 			if(this->ReadFromAsciFile("/root/Hydro/hydro.cfg"))
+			{
 				cout<<"Read local user config file"<<endl;
+				return true;
+			}
+				
 		}
 		if(!this->initialized)
 		{
 			if(this->ReadFromAsciFile("/etc/Hydro/hydro.cfg"))
+			{
 				cout<<"Read global config file"<<endl;
+				return true;
+			}
 		}
+		
+		return false;
 
 	}
 
@@ -140,9 +153,9 @@ public:
 		COOLDOWN_FILE_PATH = "/etc/Hydro/Cooldowns.txt";
 		PIN_MAPPING_PATH = "/etc/Hydro/pins.txt";
 		WATERING_AMOUNT = 200; //milliliter
-		PUMP_ML_PER_SEC = 0.83;
+		PUMP_ML_PER_SEC = 0.83; //milliliter per second 
 		USE_RTC = true;
-		RTC_ALTHOUGH_CONNECTED = false;
+		RTC_ALTHOUGH_CONNECTED = false; //retrieve the time from RTC although connected to the internet
 		initialized = false;
 		SOIL_MEASUREMENTS = 5;
 		LIGHT_MEASUREMENTS = 5;
@@ -384,6 +397,9 @@ public:
 
 	}
 
+	/*
+	* Depracated function. Not in use anymore!
+	*/
 	bool ReadFromBinaryFile(string save)
 	{
 		fstream datei;
@@ -514,6 +530,10 @@ public:
 		cout<<setw(17)<<"PUMP_PIN: "<<PUMP_PIN<<endl;
 		cout<<setw(17)<<"SOILMOIS_PIN: "<<SOILMOIS_PIN<<endl;
 	}	
+	
+	/*
+	* Depracated function. Not in use anymore
+	*/
 	bool SaveToFile(string save)
 	{
 		string timestring;
@@ -587,49 +607,49 @@ public:
 	}
 
 public: static bool isDeviceOperatedManualy(string _path)
-	{
-		fstream dat;
-		dat.open(_path.c_str(), ios_base::in);
-
-		if(dat)
 		{
-			tm temp;
-			bool isManualy = false;
-			string buff;
-			
-			getline(dat, buff);
-			getline(dat, buff);
-			dat.close();
+			fstream dat;
+			dat.open(_path.c_str(), ios_base::in);
 
-			if(stol(buff) < 0)
+			if(dat)
 			{
-				cout<<"Undefined time operated manual"<<endl;
-				return true;
-			}
-	
-			//convert timestampt in buff into a time
-			long int stamp = stol(buff);
-			temp = *localtime(&stamp);
-			mktime(&temp);
-			time_t nowraw = time(NULL);
-			tm now = *localtime(&nowraw);
+				tm temp;
+				bool isManualy = false;
+				string buff;
+				
+				getline(dat, buff);
+				getline(dat, buff);
+				dat.close();
 
-			if(difftime(mktime(&now), mktime(&temp)) >= 0)
-			{
-				cout << "manually operation exceeded" <<endl;
-				//setDeviceOperation(_path, HConfig::isDeviceOn(_path), 0);
-				return false;
+				if(stol(buff) < 0)
+				{
+					cout<<"Undefined time operated manual"<<endl;
+					return true;
+				}
+		
+				//convert timestampt in buff into a time
+				long int stamp = stol(buff);
+				temp = *localtime(&stamp);
+				mktime(&temp);
+				time_t nowraw = time(NULL);
+				tm now = *localtime(&nowraw);
+
+				if(difftime(mktime(&now), mktime(&temp)) >= 0)
+				{
+					cout << "manually operation exceeded" <<endl;
+					//setDeviceOperation(_path, HConfig::isDeviceOn(_path), 0);
+					return false;
+				}
+				else
+					return true;
+				
+				
 			}
 			else
-				return true;
-			
-			
-		}
-		else
-			cout<<"Could not open file:"<<_path<<endl;
+				cout<<"Could not open file:"<<_path<<endl;
 
-		return false;
-	}
+			return false;
+		}
 
 public: static bool isDeviceOn(string _path)
 	{
@@ -701,6 +721,7 @@ public:	//get function for member
 	int getSOIL_MEASUREMENTS() { return SOIL_MEASUREMENTS; }
 	int getSOIL_DRY_VALUE() { return SOIL_DRY_VALUE; }
 	int getSOIL_WET_VALUE() { return SOIL_WET_VALUE; }
+	
 	//LIGHT getter
 	int getDAYLIGHT_THRESHOLD() { return DAYLIGHT_THRESHOLD; }
 	int getLIGHT_MEASUREMENTS() { return LIGHT_MEASUREMENTS; }
@@ -739,8 +760,10 @@ public:	//get function for member
 	int getBTN_SHTDWN_PIN() { return BTN_SHTDWN_PIN; }
 	int getFAN_PIN() { return FAN_PIN; }
 	int getLIGHT_PIN() { return LIGHT_PIN; }
+	int getPUMP_PIN() { return PUMP_PIN; }
 
 	int getDHT22_PIN() { return DHT_PIN; }	
+	
 	//MCP GETTER
 	int getMCP_MISO_PIN() { return MCP_MISO_PIN; }
 	int getMCP_MOSI_PIN() { return MCP_MOSI_PIN; }

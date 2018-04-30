@@ -234,18 +234,7 @@ int main (int argc, char *argv[])
 	initialize();
 	
 	//set up the config
-	if(!config.initialized)
-	{
-		if(config.ReadFromAsciFile("/home/pi/Hydro/hydro.cfg"))
-			cout<<"Read local user config file"<<endl;
-	}
-	if(!config.initialized)
-	{
-		if(config.ReadFromAsciFile("/etc/Hydro/hydro.cfg"))
-			cout<<"Read global config file"<<endl;
-	}
-
-	if(config.initialized)
+	if(config.HandleSetup())
 		config.Print();
 	else
 		cout<<"Could not find a config file - aborting now."<<endl;
