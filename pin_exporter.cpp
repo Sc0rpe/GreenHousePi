@@ -7,6 +7,8 @@
 */
 #pragma once
 #include <wiringPi.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "HConfig.h"
 
 /// This function initializes wiringPi
@@ -45,7 +47,7 @@ int main()
 	pinMode(config.getLIGHT_PIN(),OUTPUT);
 	digitalWrite(config.getLIGHT_PIN(), HIGH);
 	
-	pindMode(config.getPUMP_PIN(), OUTPUT);
+	pinMode(config.getPUMP_PIN(), OUTPUT);
 	digitalWrite(config.getPUMP_PIN(), HIGH);
 	
 	pinMode(config.getSOIL_RELAY_PIN(), OUTPUT);
