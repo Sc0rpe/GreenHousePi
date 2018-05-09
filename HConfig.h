@@ -96,6 +96,10 @@ private:
 	//Relay pins
 	int SOIL_RELAY_PIN;
 
+	//SERVO VARIABLES
+	int SERVO_PIN;
+	bool USE_SERVO;
+	
 public:
 	int FAN_PIN;
 	int LIGHT_PIN;
@@ -155,6 +159,7 @@ public:
 		WATERING_AMOUNT = 200; //milliliter
 		PUMP_ML_PER_SEC = 0.83; //milliliter per second 
 		USE_RTC = true;
+		USE_SERVO = true;
 		RTC_ALTHOUGH_CONNECTED = false; //retrieve the time from RTC although connected to the internet
 		initialized = false;
 		SOIL_MEASUREMENTS = 5;
@@ -252,6 +257,7 @@ public:
 		settings.push_back(_WEBLOG_FILE_PATH);
 		settings.push_back(_LIGHT_CONTROL_FILE_PATH);
 		settings.push_back(_FAN_CONTROL_FILE_PATH);
+		settings.push_back(_USE_SERVO);
 
 		return settings;
 		
@@ -493,6 +499,8 @@ public:
 					MCP_CHANNEL_LIGHT = ltoi(buff);
 				else if(temp == "SOIL_RELAY_PIN")
 					SOIL_RELAY_PIN = ltoi(buff);
+				else if(temp == "SERVO_PIN")
+					SERVO_PIN = ltoi(buff);
 				else
 					 cerr<<"error in pin config file" <<endl;
 			}while(!datei.eof());
@@ -529,6 +537,7 @@ public:
 		cout<<setw(17)<<"FAN_CD: "<<FAN_CD.hour<<":"<<FAN_CD.min<<endl;
 		cout<<setw(17)<<"PUMP_PIN: "<<PUMP_PIN<<endl;
 		cout<<setw(17)<<"SOILMOIS_PIN: "<<SOILMOIS_PIN<<endl;
+		cout<<setw(17)<<"SERVO_PIN: "<<SERVO_PIN<<endl;
 	}	
 	
 	/*
@@ -590,6 +599,7 @@ public:
 		PUMP_PIN = default_PUMP_PIN;
 		SOILMOIS_PIN = default_SOILMOIS_PIN;
 		DHT_PIN	= default_DHT_PIN;
+		SERVO_PIN = default_SERVO_PIN;
 		CLOCK_CLOCK_PIN = default_CLOCK_CLOCK_PIN;
 		CLOCK_DATA_PIN = default_CLOCK_DATA_PIN;
 		CLOCK_CS_PIN = default_CLOCK_CS_PIN;
@@ -773,4 +783,7 @@ public:	//get function for member
 	int getMCP_CHANNEL_LIGHT() { return MCP_CHANNEL_LIGHT; }
 	int getMCP_MAX_VALUE() { return MCP_MAX_VALUE; }
 	int getSOIL_RELAY_PIN() { return SOIL_RELAY_PIN; }
+	
+	//SERVO GETTER
+	int getSERVO_PIN() { return SERVO_PIN; }
 };

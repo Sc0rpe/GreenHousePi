@@ -16,3 +16,4 @@
 #define default_MCP_CHANNEL_SOIL 0
 #define default_MCP_CHANNEL_LIGHT 1
 #define default_SOIL_RELAY_PIN 16
+#define default_SERVO_PIN -1
