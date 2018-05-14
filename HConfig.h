@@ -47,15 +47,25 @@ private:
 
 	int LIGHT_MEASUREMENTS;
 
-	double WATERING_AMOUNT;
-	double PUMP_ML_PER_SEC;
+	double WATERING_AMOUNT; //the amount of water that should be used for watering the plants if the soil moisture goes under the threshold
+	double WATER_CAPACITY; //milliliter water the water tank can hold
+	double PUMP_ML_PER_SEC; //how much milliliter water per second does the pump deliver
 
-	int DAYLIGHT_THRESHOLD;	
+	int DAYLIGHT_THRESHOLD;	//value between 0 and 1023. If the value is below the threshold the light will be turned on
 
+	/*
+	the ACTIVE booleans specifying if the devices are currently active
+	this is usefull for the Greenhouse backend
+	*/
 	bool FAN_ACTIVE;
 	bool PUMP_ACTIVE;
 	bool LIGHT_ACTIVE;
 	bool COOLDWN_ACTIVE;	
+	
+	/*
+	CDWN = Cooldowns
+	in the CDWN variables specifying the time after wich the devices are allowed to be turned on again
+	*/
 	CDWN PUMP_CD;
 	CDWN FAN_CD;
 	CDWN SOIL_CD;
@@ -78,10 +88,16 @@ private:
 	string LIGHT_CONTROL_FILE_PATH;
 	
 	
+	/*
+	Pin Variables for the RTC
+	*/
 	int CLOCK_CLOCK_PIN;
 	int CLOCK_DATA_PIN;
 	int CLOCK_CS_PIN;
 
+	/*
+	Pins for operating buttons that toggles the fan off or shuts down the raspberry and the system
+	*/
 	int BTN_SHTDWN_PIN;
 	int BTN_FANTOGGLE_PIN;	
 
@@ -93,8 +109,8 @@ private:
 	int MCP_CHANNEL_SOIL;
 	int MCP_CHANNEL_LIGHT;
 	int MCP_MAX_VALUE;
-	//Relay pins
-	int SOIL_RELAY_PIN;
+	
+
 
 	//SERVO VARIABLES
 	int SERVO_PIN;
@@ -106,6 +122,7 @@ public:
 	int PUMP_PIN;
 	int SOILMOIS_PIN;
 	int DHT_PIN;
+	int SOIL_RELAY_PIN;
 
 
 	bool initialized;	
@@ -124,6 +141,10 @@ public:
 	/*
 	* This function takes care of the initialization of the config
 	* At first it searches for a local user config. After that it will fall back to the global one.
+	
+	RETURN: 
+	 - True if the initialization was successfull. 
+	 - Else False
 	*/
 	bool HandleSetup()
 	{
@@ -171,6 +192,7 @@ public:
 		SetDefaultPinMapping();
 	}
 
+	//String to boolean
 	bool stob(string value)
 	{
 		if(value.find("TRUE") != string::npos)
@@ -707,7 +729,7 @@ public: static void setDeviceOperation(string _path, bool status, int duration)
 	}
 
 
-public:	//get function for member 
+public:	//get functions for member 
 	
 	//TEMPERATURE getter
 	double getDAY_TEMP(){return DAY_TEMP;}
