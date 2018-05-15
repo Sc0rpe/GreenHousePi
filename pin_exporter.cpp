@@ -14,11 +14,11 @@
 
 // This function initializes wiringPi
 void initialize() {
-    if(wiringPiSetup () == -1) {
+    if (wiringPiSetup () == -1) {
         cout << "could not set up wiringPi" << endl;
         exit(EXIT_FAILURE) ;
     }
-    if(setuid(getuid()) < 0) {
+    if (setuid(getuid()) < 0) {
         cout << "Dropping privileges failed. Run as Superuser\n" << endl;
         exit(EXIT_FAILURE);
     }
@@ -32,7 +32,7 @@ int main() {
     initialize();
     
     // set up the config
-    if(config.HandleSetup())
+    if (config.HandleSetup())
         config.Print();
     else
         cout << "Could not find a config file - aborting now." << endl;

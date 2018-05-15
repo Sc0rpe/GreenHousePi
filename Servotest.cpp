@@ -15,10 +15,10 @@ using namespace std;
 
 
 int main(void) {
-    if (wiringPiSetup () == -1) //using wPi pin numbering
+    if (wiringPiSetup () == -1) // using wPi pin numbering
         exit (1);
     
-    while(true) {
+    while (true) {
         pinMode(1, PWM_OUTPUT);
         pwmSetMode(PWM_MODE_MS); 
         

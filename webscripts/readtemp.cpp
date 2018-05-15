@@ -1,3 +1,8 @@
+/*
+* 2018 Rico Schulz
+*/
+
+// This program reads the temperature from the dht22 sensor and prints the value to stdout
 #include <iostream>
 #include <wiringPi.h>
 #include "dht22.h"
@@ -5,24 +10,19 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
+    wiringPiSetup();
+    HConfig config;
+    config.HandleSetup();
+    float temp = 0;
 
-	wiringPiSetup();
-	HConfig config;
-	config.HandleSetup();
-	float temp = 0;
-
-	for(int i=0; i < 6; ++i)
-	{
-		temp = ReadTemperature(config.getDHT22_PIN());
-		if(temp != -1)
-			break;
-		delay(2000);
-	}
-	cout<<temp<<"°C"<<endl;	
-	
-
+    for(int i=0; i < 6; ++i) {
+        temp = ReadTemperature(config.getDHT22_PIN());
+        if(temp != -1)
+            break;
+        delay(2000);
+    }
+    cout << temp << "°C" << endl;   
 
 return 0;
 }

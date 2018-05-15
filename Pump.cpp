@@ -1,10 +1,12 @@
 /*
-This program is called by the main programm to water the plants
-
-Args:
-argv[1] is the watering amount
-
+* 2018 Rico Schulz
+*
 */
+
+// This program is called by the main program to water the plants
+// ARGUMENTS:
+//   argv[0] = Name of the program
+//   argv[1] = Watering amount
 #pragma once
 #include <wiringPi.h>
 #include <iostream>
@@ -14,53 +16,50 @@ argv[1] is the watering amount
 
 using namespace std;
 
-int main(int argn, char *argv[])
-{
-	if(wiringPiSetup() == -1)
-	{
-		cout<<"could not initialize WiringPi"<<endl;
-		return 0;
-	}
-	if(argn < 2)
-	{
-		cout << "needs more arguments! stopping!"<<endl;
-		return 0;
-	}
+int main(int argn, char *argv[]) {
+    if (wiringPiSetup() == -1) {
+        cout << "Could not initialize WiringPi" << endl;
+        return 0;
+    }
+    
+    if (argn < 2) {
+        cout << "Needs more arguments! stopping!" << endl;
+        return 0;
+    }
 
-	HConfig config;
-	config.HandleSetup();
+    HConfig config;
+    config.HandleSetup();
 
-	const double persec = config.getPUMP_ML_PER_SEC();
-	double amount; //given in milliliter
-	if(argn >= 2)
-		amount = stoi(argv[1]);
+    const double persec = config.getPUMP_ML_PER_SEC();
+    double amount; // Given in milliliter
+    if (argn >= 2)
+        amount = stoi(argv[1]);
 
-	if(amount <= 0)
-	{
-		cerr << "Negative water amount - Invalid Argument"<<endl;
-		return 0;
-	}
+    if (amount <= 0) {
+        cerr << "Water amount equal zero or below - Invalid Argument" << endl;
+        return 0;
+    }
 
-	int sec; 
+    int sec; 
 
-	sec = (int)(amount / persec);
-	cout << endl;
-	cout << "Amount to water = " << amount << " ml" <<endl;
-	cout << sec << " seconds needed at " << persec << " ml/s"<<endl;
+    sec = (int)(amount / persec);
+    cout << endl;
+    cout << "Amount to water = " << amount << " ml" << endl;
+    cout << sec << " seconds needed at " << persec << " ml/s" << endl;
 
-	pinMode(config.PUMP_PIN, OUTPUT);
-	digitalWrite(config.PUMP_PIN, LOW);
+    pinMode(config.PUMP_PIN, OUTPUT);
+    digitalWrite(config.PUMP_PIN, LOW);
 
 
-	for(int i = 1 ; i <= sec; i++)
-	{	cout<<"\r";
-		delay(1000); //1 second
-		cout << "Amount = " << setw(6)<< persec * (double)i << " ml";
-		cout.flush();
-	}
+    for (int i = 1 ; i <= sec; i++) {   
+        cout << "\r";
+        delay(1000); //1 second
+        cout << "Amount = " << setw(6) << persec * (double)i << " ml";
+        cout.flush();
+    }
+    
+    cout << endl;
+    digitalWrite(config.PUMP_PIN, HIGH);
 
-	cout << endl;
-	digitalWrite(config.PUMP_PIN, HIGH);
-
-	return 0;
+    return 0;
 }

@@ -1,28 +1,28 @@
+/*
+* 2018 Rico Schulz
+*/
+
+// This program reads the humidity from the dht22 sensor and prints the value to stdout
 #include <iostream>
 #include <wiringPi.h>
 #include "dht22.h"
 #include "HConfig.h"
 
 using namespace std;
+ 
+int main() {
+    wiringPiSetup();
+    HConfig config;
+    config.HandleSetup();
+    float hum = 0;
 
-int main()
-{
-
-	wiringPiSetup();
-	HConfig config;
-	config.HandleSetup();
-	float hum = 0;
-
-	for(int i=0; i < 6; ++i)
-	{
-		hum = ReadHumidity(config.getDHT22_PIN());
-		if(hum != -1)
-			break;
-		delay(2000);
-	}
-	cout<<hum<<"%"<<endl;	
-	
-
-
+    for (int i=0; i < 6; ++i) {
+        hum = ReadHumidity(config.getDHT22_PIN());
+        if (hum != -1)
+            break;
+        delay(2000);
+    }
+    cout << hum << "%" << endl; 
+    
 return 0;
 }
