@@ -6,13 +6,12 @@
 using namespace std;
 
 
-//pin numbers from wiring pi
-//Parameters channel( 0 - 7 ); clockPin, MOSIpin, MISOpin, channel select pin
-int ReadAnalogData(int channel, int clkPin, int MOSIpin, int MISOpin, int csPin)
-{
+// pin numbers from wiring pi
+// Parameters channel( 0 - 7 ); clockPin, MOSIpin, MISOpin, channel select pin
+int ReadAnalogData(int channel, int clkPin, int MOSIpin, int MISOpin, int csPin) {
 	int value=0;
 	
-	//first set up the GPIO for communication
+	// first set up the GPIO for communication
 	pinMode(csPin, OUTPUT);
 	pinMode(clkPin, OUTPUT);
 	pinMode(MOSIpin, OUTPUT);
@@ -23,15 +22,14 @@ int ReadAnalogData(int channel, int clkPin, int MOSIpin, int MISOpin, int csPin)
 	digitalWrite(MOSIpin, LOW);
 
 	
-	//signalize the beginning of the communication
+	// signalize the beginning of the communication
 	digitalWrite(csPin, LOW);
 	
 	int command = channel;
 	command = command | 0b00011000;
 
-	//generate the command for the channel selection
-	for(int i=0; i < 5; ++i)
-	{
+	// generate the command for the channel selection
+	for(int i=0; i < 5; ++i) {
 		if(command & 0x10)
 			digitalWrite(MOSIpin, HIGH);
 		else
@@ -43,10 +41,9 @@ int ReadAnalogData(int channel, int clkPin, int MOSIpin, int MISOpin, int csPin)
 		command = command << 1;
 	}	
 
-	//read the answer 
+	// read the answer 
 	
-	for(int i=0; i < 11; ++i)
-	{
+	for(int i=0; i < 11; ++i) {
 		digitalWrite(clkPin, HIGH);
 		digitalWrite(clkPin, LOW);
 
@@ -56,7 +53,7 @@ int ReadAnalogData(int channel, int clkPin, int MOSIpin, int MISOpin, int csPin)
 		
 	}
 
-	//short pause for the mcp3008
+	// short pause for the mcp3008
 	delay(500);
 
 	return value;

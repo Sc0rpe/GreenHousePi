@@ -1,3 +1,11 @@
+/*
+* 2018 Rico Schulz
+*
+*
+*/
+
+// defining variable names for the config
+// used in HConfig.h
 #define _DAY_TEMP "DAY_TEMP"
 #define _NIGHT_TEMP "NIGHT_TEMP"
 #define _LIGHT_DUR "LIGHT_DUR"

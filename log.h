@@ -1,3 +1,9 @@
+/*
+* 2018 Rico Schulz
+*
+*
+*/
+
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -15,35 +21,29 @@ class Log {
 	private: time_t rawtime;
 	private: tm* timeinfo;
 
-	public:	Log()
-		{
+	public:	Log() {
 			path = "/root/Hydro/Log.txt";
 		}
 
-	public: Log(string _path)
-		{
+	public: Log(string _path) {
 			path = _path; 
 		}
 
-	public: string GetTimeAsString()
-		{
+	public: string GetTimeAsString() {
 			time(&rawtime);
 			timeinfo = localtime(&rawtime);
 	
 			return asctime(timeinfo);
 		}	
 
-	public: tm GetTimeAsTM()
-		{
+	public: tm GetTimeAsTM() {
 			time(&rawtime);
 			timeinfo=localtime(&rawtime);
 			return *timeinfo;
 		}
-	public: void AppendToLog(string data)
-		{
+	public: void AppendToLog(string data) {
 			logfile.open(path.c_str(), fstream::out | fstream::app);
-			if(!logfile)
-			{
+			if(!logfile) {
 				cout << "Could not open Logfile" << endl;
 				return;
 			}
@@ -53,38 +53,32 @@ class Log {
 			logfile.close();
 		}
 
-	public: void PrintLogFile()
-		{
+	public: void PrintLogFile() {
 			logfile.open(path.c_str(), fstream::in);
-			if(!logfile)
-			{
+			if(!logfile) {
 				cout << "Could not open Logifle" << endl;
 				return;
 			}
 			char buff[256];
-			while(!logfile.eof())
-			{
+			while(!logfile.eof()) {
 				logfile.getline(buff, 256);
-				cout<<buff<<endl;
+				cout << buff << endl;
 			}
 			logfile.close();
 		}
-	public: string* CreateWebLogString(string temp, string hum, string soil, string light)
-		{
+	public: string* CreateWebLogString(string temp, string hum, string soil, string light) {
 			string* data = new string[4];
 			data[0] = temp;
 			data[1] = hum;
 			data[2] = soil;
 			data[3] = light;
-			cout<<temp<<" "<<hum<<" "<<soil<<" "<<light<<endl;
+			cout << temp << " " << hum << " " << soil << " " << light << endl;
 			return data;
 		}
 
-	public: void ReadWebLog(string _path, float* temp, float* hum, int* soil, int* light)
-		{
+	public: void ReadWebLog(string _path, float* temp, float* hum, int* soil, int* light) {
 			weblog.open(_path.c_str(), fstream::in);
-			if(weblog)
-			{
+			if(weblog) {
 				string input;
 				getline(weblog, input);
 				*temp = stof(input);
@@ -97,11 +91,10 @@ class Log {
 				weblog.close();
 			}
 			else
-				cerr<<"Could not open Weblog File"<<endl;
+				cerr << "Could not open Weblog File" << endl;
 		}
 
-	public: void WriteWebLog(string _path, float temp, float hum, int soil, int light)
-		{
+	public: void WriteWebLog(string _path, float temp, float hum, int soil, int light) {
 			
 			float oldtemp, oldhum;
 			int oldsoil, oldlight;
@@ -113,38 +106,34 @@ class Log {
 				light = oldlight;
 
 			weblog.open(_path.c_str(), fstream::out);
-			if(weblog)
-			{
+			if(weblog) {
 				string output;
 				stringstream ss(ios_base::app | ios_base::out);
 				ss.setf(ios::fixed, ios::floatfield);
 				ss.precision(2);
-				ss<<temp<<endl<<hum<<endl<<soil<<endl<<light<<endl;
+				ss << temp << endl << hum << endl <<soil << endl << light << endl;
 				output = ss.str();
-				weblog<<output;
+				weblog << output;
 				weblog.close();
 
 			}
 			else
-				cerr<<"Could not open WeblogFile"<<endl;
+				cerr << "Could not open WeblogFile" << endl;
 		}
 
-	public: void WriteWebLog(string _path, string* data)
-		{
+	public: void WriteWebLog(string _path, string* data) {
 			weblog.open(_path.c_str(), fstream::out);
-			if(weblog)
-			{
+			if(weblog) {
 				string output;
 				stringstream ss(ios_base::app | ios_base::out);
-				for(int i=0; i< 4; ++i)
-				{
-					ss<<data[i]<<endl;
+				for(int i=0; i< 4; ++i) {
+					ss << data[i] << endl;
 				}
 				output = ss.str();
-				weblog<<output<<endl;
+				weblog << output << endl;
 				weblog.close();
 			}
 			else
-				cerr<<"Could not open Weblog file"<<endl;
+				cerr << "Could not open Weblog file" << endl;
 		}
 };
