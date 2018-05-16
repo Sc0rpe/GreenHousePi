@@ -3,10 +3,39 @@
 //
 #include "operator.h"
 
+void Operator::Run() {
+  // TODO
+  
+  // Read all Sensor values
+  vector<Device*> sensors = GetDevicesByType(DeviceType::SENSOR);
+  for (auto it : sensors) {
+    it->Run();
+  }
+  
+  // Check Constraints
+  
+  // Do actions to comply with the constraints
+  
+  // Read Messages from shared memory 
+  
+  // Do actions from messages
+}
+
+std::vector<Device*> GetDevicesByType(DeviceType dtype) {
+  std::vector<Device*> d = new std::vector<Device*>();
+  for (auto it = devices.begin() ; it != devices.end() ; ++it) {
+    if (*it.get_type() == dtype) {
+        d.push_back(it);
+        break;
+    }
+  }
+  return d;
+}
+
 ghpi::Device* ghpi::Operator::GetDeviceByName(std::string dname) {
     ghpi::Device* d;
     
-    for (std::vector<Device>::iterator it = devices.begin() ; it != devices.end() ; ++it) {
+    for (auto it = devices.begin() ; it != devices.end() ; ++it) {
         if (*it.get_name() == dname) {
             d = it;
             break;
@@ -28,5 +57,18 @@ bool ghpi::Operator::TurnOffDevice(std::string dname) {
 }
 
 void ghpi::Operator::RegisterDevice(ghpi::Device* device) {
-    devices.push_back(*device)
+    if (!CheckForDuplicateDevice(device)
+        devices.push_back(*device)
+    else
+        cout << "Device [" << device->get_name() << "] is already registered." << endl;
+}
+
+bool CheckForDuplicateDevice(Device* device) {	
+	for (std::vector<Device>::iterator it = devices.begin() ; it != devices.end() ; ++it) {
+        if (*it == device) {
+            d = it;
+            return true;
+        }
+    }
+	return false;
 }
