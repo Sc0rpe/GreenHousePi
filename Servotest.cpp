@@ -7,6 +7,7 @@
 */
 #pragma once
 #include <wiringPi.h>
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -53,8 +54,9 @@ int main(void) {
     // so if we want 50Hz frequency -> 50 = 19200Hz / 384
     pwmSetClock(PWMCLOCK); //clock at 50Hz (20ms tick) 
     
-    // we want to have that each pulse lasts 20ms -> 20 = 1000 / 50Hz
-    pwmSetRange(PWMRANGE); //range at 1000 ticks (20ms)
+    // Set range for specifying the pulse width
+    // 20000 is range for us -> if we later write with a value of 500 we get -> 20000 / 500 = 0.025 -> 20ms * 0.025 = 0.5ms high pulse
+    pwmSetRange(PWMRANGE); 
     
     while (true) {   
       if (val >= 2500)
@@ -72,7 +74,7 @@ int main(void) {
 
       // first parameter is the pin number
       // second param specifies the duration of the high pulse within each pulse
-      pwmWrite(1, 500);  //theretically 50 (1ms) to 100 (2ms)
+      pwmWrite(1, val);  //theretically 50 (1ms) to 100 (2ms)
       
       delay(1000);
     }
