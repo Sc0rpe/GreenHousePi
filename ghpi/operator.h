@@ -34,7 +34,7 @@ namespace ghpi {
      private:
       // Checks if the passed device is already registered
       //  ARGS:
-      //      device - A Pointer to a Device what is checked for duplicates
+      //      device - A Pointer to a Device which is checked for duplicates
       //  RETURN:
       //      true - If a duplicate was found
       //      false - If no duplicate was found

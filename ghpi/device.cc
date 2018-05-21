@@ -34,6 +34,12 @@ void Device::Toggle() {
     TurnOn();
 }
 
+void ghpi::Device::Print() {
+  std::cout << "Device{" << name_ << ","
+    << DeviceTypeStrings[type_] << "," 
+    << OperationModeStrings[mode_] << "," 
+    << DeviceStateStrings[state_] << "}" ;
+}
 
 std::string Device::get_name() {
   return name_;

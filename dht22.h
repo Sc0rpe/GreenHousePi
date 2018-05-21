@@ -31,10 +31,10 @@ static uint8_t sizecvt(const int read)
   return (uint8_t)read;
 }
 
-static DHTData* read_dht22_dat(int pin)
+static DHTData read_dht22_dat(int pin)
 {
-  printf("start reading dht22 from pin %d \n", pin);
-  DHTData* NewData=new DHTData();
+  printf("start reading DHT22 from pin %d \n", pin);
+  DHTData NewData;
   uint8_t laststate = HIGH;
   uint8_t counter = 0;
   uint8_t j = 0, i;
@@ -95,15 +95,15 @@ static DHTData* read_dht22_dat(int pin)
 
 
     printf("Humidity = %.2f %% Temperature = %.2f *C \n", h, t );
-    NewData->temp=t;
-    NewData->hum=h;
+    NewData.temp=t;
+    NewData.hum=h;
     return NewData;
   }
   else
   {
     printf("Data not good, skip\n");
-    NewData->temp = -1;
-    NewData->hum = -1;
+    NewData.temp = -1;
+    NewData.hum = -1;
     return NewData;
   }
 } 
