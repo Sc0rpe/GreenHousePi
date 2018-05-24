@@ -17,4 +17,4 @@ Coming soon...
 
 
 
-[Technische Universität Bergakademie Freiberg] (https://tu-freiberg.de)
+[Technische Universität Bergakademie Freiberg](https://tu-freiberg.de)
