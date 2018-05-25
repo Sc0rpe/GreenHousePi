@@ -40,9 +40,10 @@ namespace ghpi {
       MOSI ,
       MISO ,
       CLCK ,
-      CS
+      CS,
+      PWM
     };
-    static const char * PinUsageStrings[] = {"SWITCH", "BI_DATA", "MOSI", "MISO", "CLCK", "CS"};
+    static const char * PinUsageStrings[] = {"SWITCH", "BI_DATA", "MOSI", "MISO", "CLCK", "CS", "PWM"};
     
     enum DeviceState {
       OFF = 0 ,

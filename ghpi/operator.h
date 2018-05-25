@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include "device.h"
+#include "action.h"
 #include "constraint.h"
 
 namespace ghpi {
@@ -27,7 +28,7 @@ namespace ghpi {
       bool TurnOffDevice(std::string dname);
       void RegisterDevice(Device* device);
       void RegisterConstraintForDevice(Constraint* constraint);
-      bool CheckConstraints();
+      std::vector<Action> CheckConstraints(std::map<std::string, void*> values);
       void Run();
       void Clear();
 		

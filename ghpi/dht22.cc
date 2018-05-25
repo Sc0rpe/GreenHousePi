@@ -5,7 +5,7 @@
 
 using ghpi::dht22_dat;
 
-std::map<std::string, void*> Run(void* env_var) {
+std::map<std::string, void*> DHT22::Run(void* env_var) {
   values_ = get_values();
   return values_;
 }

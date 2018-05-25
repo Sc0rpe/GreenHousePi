@@ -13,8 +13,10 @@
 #include <stdint.h>
 #include <sys/types.h>
 
+// Settings for 50Hz
 #define PWMCLOCK 384
-#define PWMRANGE 20000
+#define PWMRANGE 1000
+
 using namespace std;
 
 
@@ -31,12 +33,10 @@ void initialize() {
     piHiPri(99); // priority
 }
 
-// Converts a given time in microseconds into the
-// specific value in the range
-// 500 microseconds will return 
-int getValueByTime(int time) {
-  double value = 0;
-  value = (time * PWMRANGE) / 20;  
+int ConvertAngleToValue(int angle) {
+  float value;
+  float = angle * (1.f/135.f) + 1.5f; // This gives us the time in ms for the angle
+  value = value * 50.f; // Convert to value for range 1000
   return (int)value;
 }
 
@@ -44,39 +44,40 @@ int main(void) {
     // Init wiringPi
     initialize();
     bool change_direction = false;
-    int val = 500;
+    int angle = -135;
     
     pinMode(1, PWM_OUTPUT);
     pwmSetMode(PWM_MODE_MS); 
     
-    // PWM base frequency is 19,2kHz
+    // PWM base frequency is 19,2MHz
     // pwmSetClock() sets the divisor for this clock
-    // so if we want 50Hz frequency -> 50 = 19200Hz / 384
+    // so if we want 50Hz frequency -> 50 = 19.200.000Hz / (384 * range)
     pwmSetClock(PWMCLOCK); //clock at 50Hz (20ms tick) 
     
     // Set range for specifying the pulse width
-    // 20000 is range for us -> if we later write with a value of 500 we get -> 20000 / 500 = 0.025 -> 20ms * 0.025 = 0.5ms high pulse
+    // 1000 is range for us -> if we later write with a value of 50 we get -> 50 / 1000 = 0.005 -> 20ms * 0.005 = 0.5ms high pulse
     pwmSetRange(PWMRANGE); 
     
     while (true) {   
-      if (val >= 2500)
-        change_direction = true;
-      else if ( val <= 500)
-        change_direction = false;
-      
-      if (change_direction) {
-        // Calculate new value
-        val = val - 100;
-      }
-      else {
-        val = val + 100;
-      }
 
+      if(angle < -135) {
+        angle = -135;
+        change_direction = true;
+      }
+      if(angle >= 135) {
+        angle = 135;
+        change_direction = false;
+      }
       // first parameter is the pin number
       // second param specifies the duration of the high pulse within each pulse
-      pwmWrite(1, val);  //theretically 50 (1ms) to 100 (2ms)
-      
+      pwmWrite(1, ConvertAngleToValue(angle));  //theretically 50 (1ms) to 100 (2ms)
       delay(1000);
+      
+      // Change angle
+      if (change_direction)
+        angle = angle + 3;
+      else
+        angle = angle - 3;
     }
     
     return 0;

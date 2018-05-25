@@ -5,20 +5,36 @@
 
 void Operator::Run() {
   // TODO
-  
+  std::map<std::string, void*> values;
   // Read all Sensor values
   vector<Device*> sensors = GetDevicesByType(DeviceType::SENSOR);
   for (auto it : sensors) {
-    it->Run();
+    std::map<std::string, void*> m = it->Run();
+    values.insert(m.begin(), m.end());
   }
   
   // Check Constraints
+  std::vector<Action> actions;
+  actions = CheckConstraints(values);
   
   // Do actions to comply with the constraints
   
   // Read Messages from shared memory 
   
   // Do actions from messages
+}
+
+std::vector<Action> ghpi::Operator::CheckConstraints(std::map<std::string, void*> values) {
+  for (auto &it: values) {
+    switch (it->first) {
+      case "TEMP": {
+        break;
+      }
+      case "HUM": {
+        break;
+      }
+    }
+  }
 }
 
 std::vector<Device*> GetDevicesByType(DeviceType dtype) {

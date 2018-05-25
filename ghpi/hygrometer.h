@@ -9,7 +9,7 @@
 
 namespace ghpi {
 
-  class Hygrometer : public Sensor {
+  class Hygrometer : public AnalogSensor {
    public:
     // Functions
     std::map<std::string, void*> Run(void* env_var);
