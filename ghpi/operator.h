@@ -54,6 +54,5 @@ namespace ghpi {
       // Actions are expectet to be executet to meet the constraint values
       std::map<Constraint, Action> constraints_;
         
-    };
-    
-};
+    };   
+}

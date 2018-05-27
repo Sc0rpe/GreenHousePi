@@ -5,21 +5,21 @@
 
 void ghpi::Pump::ExecuteAction(Action action) {
   switch(action.get_action_fn()) {
-    case ActionFn::ON: {
+    case ActionFn::AFN_ON: {
       float* amount = (float*)Action.get_additional_data();
       if (amount != null)
         Water(*amount);
       break;
     }
-    case ActionFn::OFF: {
+    case ActionFn::AFN_OFF: {
       TurnOff();
       break;
     }
-    case ActionFn::TOGGLE: {
+    case ActionFn::AFN_TOGGLE: {
       Toggle();
       break;
     }
-    case ActionFn::RUN: {
+    case ActionFn::AFN_RUN: {
       Run();
       break;
     }

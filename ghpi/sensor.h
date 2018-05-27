@@ -18,4 +18,4 @@ namespace ghpi {
       // Data Member
       std::map<std::string, void*> values_;
     };
-};
+}

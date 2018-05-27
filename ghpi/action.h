@@ -7,10 +7,10 @@
 namespace ghpi {
   
   enum ActionFn {
-    OFF = 0 ,
-    ON ,
-    TOGGLE ,
-    RUN
+    AFN_OFF = 0 ,
+    AFN_ON ,
+    AFN_TOGGLE ,
+    AFN_RUN
   };
   static const char * ActionFnStrings[] = {"OFF", "ON", "TOGGLE", "RUN"};
   

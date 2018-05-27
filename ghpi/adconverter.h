@@ -24,4 +24,4 @@ namespace ghpi {
       int min_val_;
       int max_val_;
     };
-};
+}

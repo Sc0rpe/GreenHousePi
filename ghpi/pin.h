@@ -28,16 +28,16 @@ namespace ghpi {
       // Functions
       std::string get_name();
       int get_number();
-      PinMode get_mode();
-      PinState get_state();
-      PinLayout get_layout();
+      ghpi::PinMode get_mode();
+      ghpi::PinState get_state();
+      ghpi::PinLayout get_layout();
       
      private:
       // Data Member
       std::string name_;
       int number_;
-      PinLayout layout_;
-      PinState state_;
-      PinMode mode_;
+      ghpi::PinLayout layout_;
+      ghpi::PinState state_;
+      ghpi::PinMode mode_;
     };
-};
+}

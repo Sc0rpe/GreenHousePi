@@ -3,8 +3,9 @@
 //
 #include "device.h"
 
+using namespace ghpi;
 
-void Device::RegisterPin(Pin* pin, PinUsage pin_usage, OnState on_state) {
+void Device::RegisterPin(ghpi::Pin* pin, PinUsage pin_usage, OnState on_state) {
   pins_.push_back(pin);
   pin_usages_[pin] = pin_usage;
   pin_on_states_[pin] = on_state;
@@ -18,7 +19,7 @@ void Device::TurnOn() {
 }
 
 void Device::TurnOff() {
-  std::vector<Pin*> switch_pins = GetPinsByUsage(PinUsage::SWITCH);
+  std::vector<ghpi::Pin*> switch_pins = GetPinsByUsage(PinUsage::SWITCH);
   for (auto &pin : switch_pins) {
     // To invert the on state we add 1 to the value and calculate mod 2 
     // if the state was 0 we will get 1 wich is still 1 mod 2
@@ -45,10 +46,6 @@ std::string Device::get_name() {
   return name_;
 }
 
-std::string Device::get_name() {
-  return name_;
-}
-
 OperationMode Device::get_mode() {
   return mode_;
 }
@@ -61,27 +58,27 @@ DeviceType Device::get_type() {
   return type_;
 }
 
-vector<Pin*> Device::GetPinsByState(PinState state) {
-  std::vector<Pin*> p = new vector<Pin*>();
-  for (auto it = pins_.begin() ; it != pins_.end() ; ++it) {
+std::vector<ghpi::Pin*> Device::GetPinsByState(PinState state) {
+  std::vector<ghpi::Pin*> p;
+  for (auto &it: pins_) {
     if (it->get_state() == state)
       p.push_back(it);
   }
   return p;
 }
 
-vector<Pin*> Device::GetPinsByMode(PinMode mode) {
-  std::vector<Pin*> p = new vector<Pin*>();
-  for (auto it = pins_.begin() ; it != pins_.end() ; ++it) {
+std::vector<ghpi::Pin*> Device::GetPinsByMode(PinMode mode) {
+  std::vector<ghpi::Pin*> p;
+  for (auto &it: pins_) {
     if (it->get_mode() == mode)
       p.push_back(it);
   }
   return p;
 }
 
-vector<Pin*> GetPinsByUsage(PinUsage usage) {
-  std::vector<Pin*> p = new vector<Pin*>();
-  for (auto pin : pins_) {
+std::vector<Pin*> Device::GetPinsByUsage(PinUsage usage) {
+  std::vector<ghpi::Pin*> p;
+  for (auto &pin: pins_) {
     if (pin_usages_.find(pin)->second == usage) {
       p.push_back(pin);
     }
@@ -92,7 +89,7 @@ vector<Pin*> GetPinsByUsage(PinUsage usage) {
 Device::Device() {
   state_ = DeviceState::OFF;
   mode_ = OperationMode::AUTONOMOUS;
-  pins_ = new std::vector<Pin*>();
-  pin_usages_ = new std::map<Pin*, PinUsage>();
-  pin_on_states_ = new std::map<Pin*, OnState>();
+}
+
+Device::~Device() {
 }

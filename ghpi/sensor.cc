@@ -4,7 +4,7 @@
 #pragma once
 #include "sensor.h"
 
-std::map*<std::string, void*> ghpi::Sensor::Run(void* env_var) {
+std::map<std::string, void*>* ghpi::Sensor::Run(void* env_var) {
   values_.clear();
   values_ = get_values();
   return &values_;
