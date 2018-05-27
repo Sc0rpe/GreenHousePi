@@ -10,8 +10,9 @@ namespace ghpi {
     class Sensor: public Device {
      public:
       // Functions
-        virtual std::vector<void*> get_values() = 0;
-        void Print();
+      std::map*<std::string, void*> Run(void* env_var);
+      virtual std::map<std::string, void*> get_values() = 0;
+      void Print();
       
      private:
       // Data Member

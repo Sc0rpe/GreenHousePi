@@ -5,11 +5,6 @@
 
 using ghpi::dht22_dat;
 
-std::map<std::string, void*> DHT22::Run(void* env_var) {
-  values_ = get_values();
-  return values_;
-}
-
 std::map<std::string, void*> DHT22::get_values() {
   std::map<std::string, void*> values;
   DHTData d = ReadDht22Dat(GetPinsByUsage(PinUsage::BI_DATA).at(0).get_number());
@@ -27,14 +22,14 @@ static uint8_t DHT22::sizecvt(const int read) {
   < 256. However, they are returned as int() types. This is a safety function */
 
   if (read > 255 || read < 0) {  
-    cerr << "Invalid data from wiringPi library." << endl;
+    std::cerr << "Invalid data from wiringPi library." << std::endl;
     exit(EXIT_FAILURE);
   }
   return (uint8_t)read;
 }
 
 static ghpi::DHTData DHT22::ReadDht22Dat(int pin) {
-  cout << "Start reading DHT22 from pin " << pin << endl;
+  std::cout << "Start reading DHT22 from pin " << pin << std::endl;
   DHTData NewData;
   uint8_t laststate = HIGH;
   uint8_t counter = 0;
@@ -94,7 +89,7 @@ static ghpi::DHTData DHT22::ReadDht22Dat(int pin) {
     return NewData;
   }
   else {
-    cerr << "Data not good, skip." << endl;
+    std::cerr << "Data not good, skip." << std::endl;
     NewData.temp = -1;
     NewData.hum = -1;
     return NewData;

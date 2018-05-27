@@ -19,7 +19,7 @@ namespace ghpi {
     void SetPosition(int angle);
     
     // Converts an angle to corresponding value for PWM.
-    // Function assumes a 50Hz and a PWM Range of 1000.
+    // Function assumes 50Hz and a PWM Range of 1000.
     // 0° is the neutral position of the motor
     // Angle is evenly spreaded around the neutral position.
     //  ARGS:

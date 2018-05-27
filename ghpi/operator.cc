@@ -8,7 +8,7 @@ void Operator::Run() {
   std::map<std::string, void*> values;
   // Read all Sensor values
   vector<Device*> sensors = GetDevicesByType(DeviceType::SENSOR);
-  for (auto it : sensors) {
+  for (auto &it : sensors) {
     std::map<std::string, void*> m = it->Run();
     values.insert(m.begin(), m.end());
   }
@@ -17,7 +17,20 @@ void Operator::Run() {
   std::vector<Action> actions;
   actions = CheckConstraints(values);
   
-  // Do actions to comply with the constraints
+  // Execute actions to comply with the constraints
+  for (auto &d_it: devices_) { // Check all devices for being an actuator
+    if (dynamic_cast<ghpi::Actuator>(*d_it))
+      for (auto &a_it: actions) { // Go through all actions to be executed
+        std::vector<Action> d_actions = ((ghpi::Actuator*)d_it)->GetActionsByName(); // Retrieve actions the current device can execute
+        for (auto &da_it: d_actions) {
+          if (da_it->get_name() == a_it->get_name()) { // Does current action match the action of device?
+            d_it->ExecuteAction(*a_it); // If they match we have the right device -> execute!
+            std::cout << "["<<d_it->get_name() << "]" << " executing action: " << a_it->get_name() << std::endl;
+          }
+        }
+          
+      }
+  }
   
   // Read Messages from shared memory 
   
@@ -28,8 +41,7 @@ std::vector<Action> ghpi::Operator::CheckConstraints(std::map<std::string, void*
   // List of Actions to be executed due of constraint violations
   std::vector<Action> actions;
   
-  for (auto &it: values) {
-    switch (it->first) {
+  for (auto &v_it: values) {
       case EnviromentValue::TEMPERATURE: {
         
         break;
@@ -49,16 +61,21 @@ std::vector<Action> ghpi::Operator::CheckConstraints(std::map<std::string, void*
       default: {
         assert(false);
       }
+    } */
+    for (auto &c_it: constraints_) {
+      if (c_it->first.get_variable() == v_it->first) {
+        if (! c_it->first.CheckForValue(v_it->second))
+          actions.push_back(c_it->second);
+      }
     }
   }
-  
   return actions;
 }
 
 std::vector<Device*> GetDevicesByType(DeviceType dtype) {
   std::vector<Device*> d = new std::vector<Device*>();
-  for (auto it = devices.begin() ; it != devices.end() ; ++it) {
-    if (*it.get_type() == dtype) {
+  for (auto &it: devices) {
+    if (it->get_type() == dtype) {
         d.push_back(it);
         break;
     }
@@ -69,8 +86,8 @@ std::vector<Device*> GetDevicesByType(DeviceType dtype) {
 ghpi::Device* ghpi::Operator::GetDeviceByName(std::string dname) {
     ghpi::Device* d;
     
-    for (auto it = devices.begin() ; it != devices.end() ; ++it) {
-        if (*it.get_name() == dname) {
+    for (auto &it: devices) {
+        if (it->get_name() == dname) {
             d = it;
             break;
         }

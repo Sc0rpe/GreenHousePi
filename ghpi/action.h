@@ -19,8 +19,15 @@ namespace ghpi {
     // Functions
     std::string get_name();
     std::string get_action_fn();
+    void* get_additional_data();
     void Print();
-    Action(std::string name, ActionFn action_fn);
+    
+    // Constructor
+    //  ARGS:
+    //    name: Arbitrary name for the action
+    //    action_fn: Action to be executed out of the ActionFn enum
+    //    add_data: Additional action data. Null for the most. ml to water for pump
+    Action(std::string name, ActionFn action_fn, void* add_data);
     
    private:
     // Data Members
@@ -32,7 +39,11 @@ namespace ghpi {
     
     // Action FNs can be out of {OFF, ON, TOGGLE, RUN}.
     // These are the actions that can be executet by each device
-    ActionFn action_fn_;  
+    ActionFn action_fn_; 
+
+    // Arbitrary additional data like amount
+    // of water for the pump class
+    void* additional_data_;
   };
   
 };
