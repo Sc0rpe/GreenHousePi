@@ -25,16 +25,34 @@ void Operator::Run() {
 }
 
 std::vector<Action> ghpi::Operator::CheckConstraints(std::map<std::string, void*> values) {
+  // List of Actions to be executed due of constraint violations
+  std::vector<Action> actions;
+  
   for (auto &it: values) {
     switch (it->first) {
-      case "TEMP": {
+      case EnviromentValue::TEMPERATURE: {
+        
         break;
       }
-      case "HUM": {
+      case EnviromentValue::HUMIDITY: {
+        
         break;
+      }
+      case EnviromentValue::SOIL_MOISTURE: {
+        
+        break;
+      }
+      case EnviromentValue::LIGHT_INTENSITY: {
+        
+        break;
+      }
+      default: {
+        assert(false);
       }
     }
   }
+  
+  return actions;
 }
 
 std::vector<Device*> GetDevicesByType(DeviceType dtype) {

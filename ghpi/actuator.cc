@@ -5,19 +5,19 @@
 
 void ExecuteAction(Action action) {
   switch(action.get_action_fn()) {
-    case "ON": {
+    case ActionFn::ON: {
       TurnOn();
       break;
     }
-    case "OFF": {
+    case ActionFn::OFF: {
       TurnOff();
       break;
     }
-    case "TOGGLE": {
+    case ActionFn::TOGGLE: {
       Toggle();
       break;
     }
-    case "RUN": {
+    case ActionFn::RUN: {
       Run();
       break;
     }

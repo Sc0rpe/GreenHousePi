@@ -6,13 +6,21 @@
 
 namespace ghpi {
   
+  enum ActionFn {
+    OFF = 0 ,
+    ON ,
+    TOGGLE ,
+    RUN
+  };
+  static const char * ActionFnStrings[] = {"OFF", "ON", "TOGGLE", "RUN"};
+  
   class Action {
    public:
     // Functions
     std::string get_name();
     std::string get_action_fn();
     void Print();
-    Action(std::string, std::string);
+    Action(std::string name, ActionFn action_fn);
     
    private:
     // Data Members
@@ -22,9 +30,9 @@ namespace ghpi {
     // actions of an actuator so it can be executed by it
     std::string name_;
     
-    // Action FNs can be out of {RUN, ON, OFF, TOGGLE}.
+    // Action FNs can be out of {OFF, ON, TOGGLE, RUN}.
     // These are the actions that can be executet by each device
-    std::string action_fn_;  
+    ActionFn action_fn_;  
   };
   
 };

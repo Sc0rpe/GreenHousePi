@@ -12,10 +12,10 @@ std::string ghpi::Action::get_action_fn() {
 }
 
 void ghpi::Action::Print() {
-  std::cout << "Action{" << name_ << "," << action_fn_ << "}" ;
+  std::cout << "Action{" << name_ << "," << ActionFnStrings[action_fn_] << "}" ;
 }
 
-Action::Action(std::string name, std::string action_fn) {
+Action::Action(std::string name, ActionFn action_fn) {
   name_ = name;
   action_fn_ = action_fn;
 }
