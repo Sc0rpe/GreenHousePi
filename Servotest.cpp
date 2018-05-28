@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <unistd.h>
 #include <sys/types.h>
 
 // Settings for 50Hz
@@ -35,7 +36,7 @@ void initialize() {
 
 int ConvertAngleToValue(int angle) {
   float value;
-  float = angle * (1.f/135.f) + 1.5f; // This gives us the time in ms for the angle
+  value = angle * (1.f/135.f) + 1.5f; // This gives us the time in ms for the angle
   value = value * 50.f; // Convert to value for range 1000
   return (int)value;
 }
@@ -71,7 +72,7 @@ int main(void) {
       // first parameter is the pin number
       // second param specifies the duration of the high pulse within each pulse
       pwmWrite(1, ConvertAngleToValue(angle));  //theretically 50 (1ms) to 100 (2ms)
-      delay(1000);
+      delay(300);
       
       // Change angle
       if (change_direction)
