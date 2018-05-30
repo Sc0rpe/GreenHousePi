@@ -3,6 +3,8 @@
 //
 #include "operator.h"
 
+using boost::interprocess;
+
 void Operator::Run() {
   // TODO
   std::map<std::string, void*> values;
@@ -122,4 +124,11 @@ bool CheckForDuplicateDevice(Device* device) {
         }
     }
 	return false;
+
+  
+Operator::Operator() {
+  // Create shared Memory Segment for message queue
+  shm_messages_ = shared_memory_object(create_only, "GHPI_Messages", read_write);
+  shm_messages_.truncate(MSG_QUEUE_SIZE);
+  region = mapped_region(shm_messages_, read_write);
 }

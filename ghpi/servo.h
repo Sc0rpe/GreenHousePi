@@ -13,7 +13,8 @@ namespace ghpi {
    public:
     void TurnOn();
     void TurnOff();
-   
+    void Initialize();
+    
    private:
     // Functions
     void SetPosition(int angle);
@@ -31,5 +32,8 @@ namespace ghpi {
     // Data Member
     // Angle the motor can totaly rotate
     int angle_;
+    
+    // Time to wait for setting the position in milliseconds
+    int reaction_time_;
   };
 };

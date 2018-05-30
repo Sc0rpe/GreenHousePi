@@ -5,9 +5,13 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <boost/interprocess/shared_memory_object.hpp>
+#include <boost/interprocess/managed_region.hpp>
 #include "device.h"
 #include "action.h"
 #include "constraint.h"
+
+#define MSG_QUEUE_SIZE 1000
 
 namespace ghpi {
     
@@ -31,7 +35,8 @@ namespace ghpi {
       std::vector<Action> CheckConstraints(std::map<std::string, void*> values);
       void Run();
       void Clear();
-		
+      Operator();
+    
      private:
       //Functions
       
@@ -53,6 +58,14 @@ namespace ghpi {
       // Map of Constraints and the Actions to execute to meet them
       // Actions are expectet to be executet to meet the constraint values
       std::map<Constraint, Action> constraints_;
+      
+      struct shm_remove {
+         shm_remove() { shared_memory_object::remove("MySharedMemory"); }
+         ~shm_remove(){ shared_memory_object::remove("MySharedMemory"); }
+      } remover_;
+      
+      boost::interprocess::shared_memory_object shm_messages_;
+      boost::interprocess::mapped_region region_;
         
     };   
 }
