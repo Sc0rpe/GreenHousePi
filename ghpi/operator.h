@@ -36,6 +36,22 @@ namespace ghpi {
       void Run();
       void Clear();
       Operator();
+      
+      struct MSGQueue {
+        Action actions_[256];
+        int index_;
+        MSQueue() { index_ = 0; }
+        
+        Action Get(int i) {
+          --index_;
+          return actions_[i];
+        }
+        
+        void Put(Action act) {
+          actions_[index_] = act;
+          ++index_;
+        }
+      };
     
      private:
       //Functions
@@ -51,6 +67,8 @@ namespace ghpi {
       //      false - If no duplicate was found
       bool CheckForDuplicateDevice(Device* device);
       
+      std::vector<ghpi::Action> ReadMessagesFromQueue();
+      
       // Data Members
       
       std::vector<Device> devices_;
@@ -59,10 +77,13 @@ namespace ghpi {
       // Actions are expectet to be executet to meet the constraint values
       std::map<Constraint, Action> constraints_;
       
+      const std::string SHM_NAME = "GHPI_Messages";
+      
       struct shm_remove {
-         shm_remove() { shared_memory_object::remove("MySharedMemory"); }
-         ~shm_remove(){ shared_memory_object::remove("MySharedMemory"); }
+        shm_remove() { shared_memory_object::remove(SHM_NAME); }
+        ~shm_remove(){ shared_memory_object::remove(SHM_NAME); }
       } remover_;
+    
       
       boost::interprocess::shared_memory_object shm_messages_;
       boost::interprocess::mapped_region region_;

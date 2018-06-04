@@ -36,6 +36,7 @@ void Operator::Run() {
   
   // Read Messages from shared memory 
   
+  
   // Do actions from messages
 }
 
@@ -125,10 +126,15 @@ bool CheckForDuplicateDevice(Device* device) {
     }
 	return false;
 
+std::vector<ghpi::Action> ghpi::Operator::ReadMessagesFromQueue() {
+  // Read Messages from the Queue
+  
+}  
+  
   
 Operator::Operator() {
   // Create shared Memory Segment for message queue
-  shm_messages_ = shared_memory_object(create_only, "GHPI_Messages", read_write);
+  shm_messages_ = shared_memory_object(create_only, ghpi::Operator::SHM_NAME, read_write);
   shm_messages_.truncate(MSG_QUEUE_SIZE);
   region = mapped_region(shm_messages_, read_write);
 }
