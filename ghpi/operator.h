@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 #include <boost/interprocess/shared_memory_object.hpp>
-#include <boost/interprocess/managed_region.hpp>
+#include <boost/interprocess/mapped_region.hpp>
 #include "device.h"
 #include "action.h"
 #include "constraint.h"
@@ -40,7 +40,7 @@ namespace ghpi {
       struct MSGQueue {
         Action actions_[256];
         int index_;
-        MSQueue() { index_ = 0; }
+        MSGQueue() { index_ = 0; }
         
         Action Get(int i) {
           --index_;
