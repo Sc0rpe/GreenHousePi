@@ -15,13 +15,14 @@ namespace ghpi {
   class Constraint {
    public:
     // Functions
-    bool CheckForValue(float value);
-    std::string get_name();
-    std::string get_variable();
+    bool CheckForValue(float value) const;
+    std::string get_name() const;
+    std::string get_variable() const;
     ConstraintCondition get_condition();
     // Constructors
     Constraint(std::string name, std::string variable, ConstraintCondition condition);
     Constraint(std::string name, std::string variable, std::string condition);
+    ~Constraint();
     
    private:
     // Data Members

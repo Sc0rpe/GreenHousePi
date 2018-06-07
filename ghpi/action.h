@@ -22,6 +22,7 @@ namespace ghpi {
     void* get_additional_data();
     void Print();
     Action();
+    ~Action();
     
     // Constructor
     //  ARGS:

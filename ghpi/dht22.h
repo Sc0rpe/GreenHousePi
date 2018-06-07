@@ -19,7 +19,7 @@ namespace ghpi {
     class DHT22: public Sensor {
       public:
       // Functions
-      std::map<std::string, void*> get_values();
+      std::map<std::string, float> get_values();
       DHTData ReadDht22Dat(int pin);
       static uint8_t sizecvt(const int read);
       DHT22();

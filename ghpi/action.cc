@@ -24,3 +24,7 @@ Action::Action(std::string name, ActionFn action_fn, void* add_data) {
   action_fn_ = action_fn;
   additional_data_ = add_data;
 }
+
+Action::~Action() {
+
+}

@@ -33,3 +33,11 @@ int ghpi::Hygrometer::ReadSoilMoisture(int channel) {
   
   return value;
 }
+
+ghpi::Hygrometer::Hygrometer() : AnalogSensor() {
+  name_ = "Hygrometer";
+  mode_ = OperationMode::AUTONOMOUS;
+}
+
+ghpi::Hygrometer::~Hygrometer() : ~AnalogSensor() {
+}

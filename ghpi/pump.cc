@@ -2,8 +2,9 @@
 // 2018 Rico Schulz
 //
 #include "pump.h"
+using ghpi::Pump;
 
-void ghpi::Pump::ExecuteAction(Action action) {
+void Pump::ExecuteAction(Action action) {
   switch(action.get_action_fn()) {
     case ActionFn::AFN_ON: {
       float* amount = (float*)Action.get_additional_data();
@@ -29,7 +30,7 @@ void ghpi::Pump::ExecuteAction(Action action) {
   }
 }
 
-void ghpi::Pump::Water(float amount) {
+void Pump::Water(float amount) {
   // Calculate time for watering
   float seconds = amount / ml_per_sec_;
   if (seconds <= 0) {
@@ -45,3 +46,8 @@ void ghpi::Pump::Print() {
 
 }
 
+Pump::Pump() : Actuator() {
+}
+
+Pump::~Pump() : ~Actuator() {
+}

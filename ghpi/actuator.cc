@@ -28,7 +28,7 @@ void ExecuteAction(Action action) {
 }
 
 // Overriding Device::Run(void*)
-std::map*<std::string, void*> ghpi::Actuator::Run(void* env_var) {
+std::map<std::string, float>* ghpi::Actuator::Run(void* env_var) {
   std::string s = static_cast<std::string>(*env_var); 
   std::vector<ghpi::Action> actions = GetActionsByName(s);
   
@@ -57,4 +57,12 @@ void ghpi::Actuator::Print() {
     std::cout << std::endl;
   }
   std::cout << "}";
+}
+
+Actuator::Actuator(): Device() {
+  name_ = "Actuator";
+  mode_ = OperationMode::AUTONOMOUS;
+}
+
+Actuator::~Actuator(): ~Device() {
 }

@@ -4,7 +4,7 @@
 #include "constraint.h"
 
 
-bool ghpi::Constraint::CheckForValue(float value) {
+bool ghpi::Constraint::CheckForValue(float value) const {
   switch (condition_) {
     case ConstraintCondition::BELOW: {
       if (value > value_)
@@ -28,11 +28,11 @@ bool ghpi::Constraint::CheckForValue(float value) {
   return true;
 }
 
-std::string ghpi::Constraint::get_name() {
+std::string ghpi::Constraint::get_name() const {
   return name_;
 }
 
-std::string ghpi::Constraint::get_variable() {
+std::string ghpi::Constraint::get_variable() const {
   return variable_;
 }
 
@@ -67,4 +67,7 @@ ghpi::Constraint::Constraint(std::string name, std::string variable, std::string
     }
   }
   Constraint(name, variable, c);
+}
+
+ghpi::~Constraint() {
 }

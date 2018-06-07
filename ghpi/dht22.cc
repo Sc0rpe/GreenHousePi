@@ -5,13 +5,13 @@
 
 using ghpi::dht22_dat;
 
-std::map<std::string, void*> DHT22::get_values() {
-  std::map<std::string, void*> values;
+std::map<std::string, float> DHT22::get_values() {
+  std::map<std::string, float> values;
   DHTData d = ReadDht22Dat(GetPinsByUsage(PinUsage::BI_DATA).at(0).get_number());
   
   // add data to return map
-  values["TEMP"] = (void*)d.temp; 
-  values["HUM"] =  (void*)d.hum;
+  values["TEMP"] = d.temp; 
+  values["HUM"] =  d.hum;
   
   return values;
 }
@@ -96,11 +96,11 @@ static ghpi::DHTData DHT22::ReadDht22Dat(int pin) {
   }
 } 
 
-DHT22()  {
+DHT22::DHT22() : Sensor() {
   
   name_ = "DHT22";
 }
 
-~DHT22() {
+DHT22::~DHT22() : ~Sensor() {
   
 }

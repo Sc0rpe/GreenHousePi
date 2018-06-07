@@ -11,6 +11,7 @@ namespace ghpi {
       int GetValueFromChannel(int channel);
       ADConverter(int clk_pin, int mosi_pin, int miso_pin, int cs_pin,
                     int min_val, int max_val);
+      ~ADConverter();
       
      private:
       int ReadAnalogData(int channel, int clk_pin, int mosi_pin,

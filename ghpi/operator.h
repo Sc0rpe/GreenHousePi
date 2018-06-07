@@ -9,9 +9,12 @@
 #include <boost/interprocess/mapped_region.hpp>
 #include "device.h"
 #include "action.h"
+#include "actuator.h"
 #include "constraint.h"
 
 #define MSG_QUEUE_SIZE 1000
+
+using namespace boost::interprocess;
 
 namespace ghpi {
     
@@ -30,12 +33,13 @@ namespace ghpi {
       bool ToggleDevice(std::string dname);
       bool TurnOnDevice(std::string dname);
       bool TurnOffDevice(std::string dname);
-      void RegisterDevice(Device* device);
+      void RegisterDevice(Device &device);
       void RegisterConstraint(Constraint constraint);
-      std::vector<Action> CheckConstraints(std::map<std::string, void*> values);
+      std::vector<Action> CheckConstraints(std::map<std::string, float> values);
       void Run();
       void Clear();
       Operator();
+      ~Operator();
       
       struct MSGQueue {
         Action actions_[256];
@@ -65,7 +69,7 @@ namespace ghpi {
       //  RETURN:
       //      true - If a duplicate was found
       //      false - If no duplicate was found
-      bool CheckForDuplicateDevice(Device* device);
+      bool CheckForDuplicateDevice(Device &device);
       
       std::vector<ghpi::Action> ReadMessagesFromQueue();
       
@@ -77,7 +81,7 @@ namespace ghpi {
       // Actions are expectet to be executet to meet the constraint values
       std::map<Constraint, Action> constraints_;
       
-      const std::string SHM_NAME = "GHPI_Messages";
+      static constexpr const char* const SHM_NAME = "GHPI_Messages";
       
       struct shm_remove {
         shm_remove() { shared_memory_object::remove(SHM_NAME); }

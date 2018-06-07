@@ -11,7 +11,7 @@ namespace ghpi {
     class Actuator: public Device {
       public:
       // Functions
-      std::map*<std::string, void*> Run(void* env_var);
+      std::map<std::string, float>* Run(void* env_var);
       void RegisterAction(Action action);
       std::vector<Action> GetActionsByName(std::string name);
       virtual void ExecuteAction(Action action);

@@ -54,7 +54,7 @@ namespace ghpi {
     class Device { 
      public:  
       // Functions
-      virtual std::map<std::string, void*>* Run(void* env_var) = 0;
+      virtual std::map<std::string, float>* Run(void* env_var) = 0;
       virtual void TurnOn();
       virtual void TurnOff();
       virtual void Toggle();
@@ -67,10 +67,11 @@ namespace ghpi {
       OperationMode get_mode();
       DeviceState get_state();
       DeviceType get_type();
+      bool operator==(const Device &r) const;
       Device();
       ~Device();
       
-     private:
+     protected:
       // Data Members
       std::string name_;
       std::vector<Pin*> pins_;

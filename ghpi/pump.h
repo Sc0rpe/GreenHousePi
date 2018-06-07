@@ -10,6 +10,8 @@ namespace ghpi {
      public:
       // Functions
       void ExecuteAction(Action action);
+      Pump();
+      ~Pump();
       
      private:
      // Functions

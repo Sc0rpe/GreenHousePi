@@ -66,3 +66,6 @@ ghpi::ADConverter::ADConverter(int clk_pin, int mosi_pin, int miso_pin, int cs_p
   min_val_ = min_val;
   max_val_ = max_val;
 }
+
+ADConverter::~ADConverter() {
+}

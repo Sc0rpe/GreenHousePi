@@ -86,6 +86,13 @@ std::vector<Pin*> Device::GetPinsByUsage(PinUsage usage) {
   return p;
 }
 
+bool ghpi::Device::operator==(const Device &r) const {
+  if (r.name_ == name_)
+    return true;
+  else
+    return false;
+}
+
 Device::Device() {
   state_ = DeviceState::OFF;
   mode_ = OperationMode::AUTONOMOUS;

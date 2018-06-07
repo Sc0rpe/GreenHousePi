@@ -9,9 +9,8 @@ namespace ghpi {
   
   class AnalogSensor : public Sensor {
    public:
-    // Retrieves the value of given channel as an int
-    // in range from 0 to 1023 from the a/d converter
-    int GetValueFromChannel(int channel);
+    AnalogSensor();
+    ~AnalogSensor();
     
    private:
     ADConverter adconverter_;

@@ -14,8 +14,9 @@ namespace ghpi {
     // Functions
     std::map<std::string, void*> Run(void* env_var);
     std::vector<std::string, void*> get_values();
-    
     int ReadSoilMoisture(int channel);
+    Hygrometer();
+    ~Hygrometer();
    
    private:
   
