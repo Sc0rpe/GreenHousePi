@@ -16,6 +16,8 @@ namespace ghpi {
       std::vector<Action> GetActionsByName(std::string name);
       virtual void ExecuteAction(Action action);
       void Print();
+      Actuator();
+      ~Actuator();
       
       private:
         // Data Member
