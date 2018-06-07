@@ -22,6 +22,8 @@ namespace ghpi {
       std::map<std::string, void*> get_values();
       DHTData ReadDht22Dat(int pin);
       static uint8_t sizecvt(const int read);
+      DHT22();
+      ~DHT22;
       
       private:
         // Data Member

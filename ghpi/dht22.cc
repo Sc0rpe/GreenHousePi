@@ -95,3 +95,12 @@ static ghpi::DHTData DHT22::ReadDht22Dat(int pin) {
     return NewData;
   }
 } 
+
+DHT22()  {
+  
+  name_ = "DHT22";
+}
+
+~DHT22() {
+  
+}
