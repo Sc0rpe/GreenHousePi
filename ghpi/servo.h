@@ -14,7 +14,8 @@ namespace ghpi {
     void TurnOn();
     void TurnOff();
     void Initialize();
-    
+    Servo();
+    ~Servo();
    private:
     // Functions
     void SetPosition(int angle);
