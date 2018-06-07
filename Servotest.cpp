@@ -41,7 +41,7 @@ int ConvertAngleToValue(int angle) {
   return (int)value;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
     // Init wiringPi
     initialize();
     bool change_direction = false;
@@ -57,28 +57,42 @@ int main(void) {
     
     // Set range for specifying the pulse width
     // 1000 is range for us -> if we later write with a value of 50 we get -> 50 / 1000 = 0.005 -> 20ms * 0.005 = 0.5ms high pulse
-    pwmSetRange(PWMRANGE); 
-    
-    while (true) {   
-
-      if(angle < -135) {
-        angle = -135;
-        change_direction = true;
-      }
-      if(angle >= 135) {
-        angle = 135;
-        change_direction = false;
-      }
-      // first parameter is the pin number
-      // second param specifies the duration of the high pulse within each pulse
-      pwmWrite(1, ConvertAngleToValue(angle));  //theretically 50 (1ms) to 100 (2ms)
-      delay(300);
+    pwmSetRange(PWMRANGE);
+    if (argc == 2) {
+      std::string ang(argv[1]);
+      angle = std::stoi(ang);
+      if (angle > 135 || angle < -135)
+        return 0;
+      std::cout << "Setting Motor Position to " << angle << "°" << endl;
+      pwmWrite(1, ConvertAngleToValue(angle));
+      delay(2000);
+    } else { 
+     // Set Motor to starting angle and wait some time
+     pwmWrite(1, ConvertAngleToValue(angle));
+     delay(1000);
+     
+     while (true) {   
+  
+       if(angle < -135) {
+         angle = -135;
+         change_direction = true;
+       }
+       if(angle >= 135) {
+         angle = 135;
+         change_direction = false;
+       }
+       // first parameter is the pin number
+       // second param specifies the duration of the high pulse within each pulse
+       pwmWrite(1, ConvertAngleToValue(angle));  //theretically 50 (1ms) to 100 (2ms)
+       std::cout << "Angle: " << angle << std::endl;
+        delay(150);
       
-      // Change angle
-      if (change_direction)
-        angle = angle + 3;
-      else
-        angle = angle - 3;
+       // Change angle
+        if (change_direction)
+          angle = angle + 3;
+        else
+          angle = angle - 3;
+      }
     }
     
     return 0;
