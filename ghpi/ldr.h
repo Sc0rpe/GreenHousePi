@@ -10,6 +10,8 @@ namespace ghpi {
    public:
     // Functions
     std::map<std::string, void*> get_values();
+    LDR();
+    ~LDR();
     
    private:
     // Functions
