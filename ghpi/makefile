@@ -25,4 +25,4 @@ servo:
 action:
 	g++ -c -std=c++0x -I/usr/local/inclu -L/usr/local/lib -lwiringPi action.cc
 main : 
-	g++ -std=c++0x -I/usr/local/inclu -L/usr/local/lib -lwiringPi ghpi.cc -o ghpi.o
+	g++ -std=c++0x -I/usr/local/inclu -I/usr/local/include/boost -L/usr/local/lib -lwiringPi -lrt ghpi.cc -o ghpi.o

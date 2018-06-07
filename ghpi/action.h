@@ -21,6 +21,7 @@ namespace ghpi {
     std::string get_action_fn();
     void* get_additional_data();
     void Print();
+    Action();
     
     // Constructor
     //  ARGS:
