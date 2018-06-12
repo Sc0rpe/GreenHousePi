@@ -18,7 +18,7 @@ namespace ghpi {
    public:
     // Functions
     std::string get_name();
-    std::string get_action_fn();
+    ActionFn get_action_fn();
     void* get_additional_data();
     void Print();
     Action();

@@ -67,5 +67,5 @@ ghpi::ADConverter::ADConverter(int clk_pin, int mosi_pin, int miso_pin, int cs_p
   max_val_ = max_val;
 }
 
-ADConverter::~ADConverter() {
+ghpi::ADConverter::~ADConverter() {
 }

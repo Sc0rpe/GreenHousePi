@@ -2,6 +2,8 @@
 // 2018 Rico Schulz
 //
 #pragma once
+#include <string>
+#include <cassert>
 
 namespace ghpi {
   

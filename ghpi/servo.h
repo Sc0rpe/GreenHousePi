@@ -14,11 +14,12 @@ namespace ghpi {
     void TurnOn();
     void TurnOff();
     void Initialize();
-    Servo();
+    Servo(int max_angle);
     ~Servo();
     
    private:
     // Functions
+    void SetUpPWM();
     void SetPosition(int angle);
     
     // Converts an angle to corresponding value for PWM.
@@ -33,6 +34,9 @@ namespace ghpi {
     
     // Data Member
     // Angle the motor can totaly rotate
+    int max_angle_;
+    
+    // Current angle of the motor
     int angle_;
     
     // Time to wait for setting the position in milliseconds

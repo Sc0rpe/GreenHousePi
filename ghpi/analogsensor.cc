@@ -3,10 +3,11 @@
 //
 #include "analogsensor.h"
 
-AnalogSensor() : Sensor() {
+ghpi::AnalogSensor::AnalogSensor(ghpi::ADConverter *adconverter) : Sensor() {
   name_ = "AnalogSensor";
   mode_ = OperationMode::AUTONOMOUS;
+  adconverter_ = adconverter;
 }
 
-~AnalogSensor() : ~Sensor() {
+ghpi::AnalogSensor::~AnalogSensor() {
 }

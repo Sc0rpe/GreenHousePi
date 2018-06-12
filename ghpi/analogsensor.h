@@ -9,13 +9,12 @@ namespace ghpi {
   
   class AnalogSensor : public Sensor {
    public:
-    AnalogSensor();
+    AnalogSensor(ADConverter *adconverter);
     ~AnalogSensor();
-    
-   private:
-    ADConverter adconverter_;
+   protected:
+    ADConverter *adconverter_;
     int channel_;
     
-  }
+  };
   
 }

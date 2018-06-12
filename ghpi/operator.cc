@@ -11,8 +11,8 @@ void ghpi::Operator::Run() {
   // Read all Sensor values
   std::vector<Device*> sensors = GetDevicesByType(ghpi::DeviceType::SENSOR);
   for (auto &it : sensors) {
-    std::map<std::string, float>* m = it->Run(NULL);
-    values.insert(m->begin(), m->end());
+    std::map<std::string, float> m = it->Run(NULL);
+    values.insert(m.begin(), m.end());
   }
   
   // Check Constraints
@@ -20,8 +20,8 @@ void ghpi::Operator::Run() {
   actions = CheckConstraints(values);
   
   // Execute actions to comply with the constraints
-  for (auto &d_it: devices_) { // Check all devices for being an actuator
-    if (ghpi::Actuator *act = dynamic_cast<ghpi::Actuator*>(&d_it))
+  for (auto d_it: devices_) { // Check all devices for being an actuator
+    if (ghpi::Actuator *act = dynamic_cast<ghpi::Actuator*>(d_it))
       for (auto &a_it: actions) { // Go through all actions to be executed
         std::vector<Action> d_actions = act->GetActionsByName(a_it.get_name()); // Retrieve actions the current device can execute
         for (auto &da_it: d_actions) {
@@ -53,9 +53,9 @@ std::vector<ghpi::Action> ghpi::Operator::CheckConstraints(std::map<std::string,
 
 std::vector<ghpi::Device*> ghpi::Operator::GetDevicesByType(ghpi::DeviceType dtype) {
   std::vector<ghpi::Device*> d;
-  for (auto &it: devices_) {
-    if (it.get_type() == dtype) {
-        d.push_back(&it);
+  for (auto it: devices_) {
+    if (it->get_type() == dtype) {
+        d.push_back(it);
         break;
     }
   }
@@ -64,9 +64,9 @@ std::vector<ghpi::Device*> ghpi::Operator::GetDevicesByType(ghpi::DeviceType dty
 
 ghpi::Device* ghpi::Operator::GetDeviceByName(std::string dname) {
     ghpi::Device* d;    
-    for (auto &it: devices_) {
-        if (it.get_name() == dname) {
-            d = &it;
+    for (auto it: devices_) {
+        if (it->get_name() == dname) {
+            d = it;
             break;
         }
     }
@@ -85,15 +85,15 @@ bool ghpi::Operator::TurnOffDevice(std::string dname) {
     ghpi::Operator::GetDeviceByName(dname)->TurnOff();
 }
 
-void ghpi::Operator::RegisterDevice(ghpi::Device& device) {
+void ghpi::Operator::RegisterDevice(ghpi::Device* device) {
     if (!CheckForDuplicateDevice(device))
         devices_.push_back(device);
     else
-        std::cout << "Device [" << device.get_name() << "] is already registered." << std::endl;
+        std::cout << "Device [" << device->get_name() << "] is already registered." << std::endl;
 }
 
-bool ghpi::Operator::CheckForDuplicateDevice(ghpi::Device &device) {	
-	for (auto &it: devices_) {
+bool ghpi::Operator::CheckForDuplicateDevice(ghpi::Device* device) {	
+	for (auto it: devices_) {
         if (it == device) {
             return true;
         }

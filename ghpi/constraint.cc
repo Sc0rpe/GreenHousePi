@@ -36,7 +36,7 @@ std::string ghpi::Constraint::get_variable() const {
   return variable_;
 }
 
-ConstraintCondition ghpi::Constraint::get_condition() {
+ghpi::ConstraintCondition ghpi::Constraint::get_condition() {
   return condition_;
 }
 
@@ -49,25 +49,17 @@ ghpi::Constraint::Constraint(std::string name, std::string variable, ConstraintC
 ghpi::Constraint::Constraint(std::string name, std::string variable, std::string condition) {
   ConstraintCondition c;
   
-  switch (condition) {
-    case "BELOW": {
-      c = ConstraintCondition::BELOW;
-      break;
-    }
-    case "OVER": {
-      c = ConstraintCondition::OVER;
-      break;
-    }
-    case "EQUAL": {
-      c = ConstraintCondition::EQUAL;
-      break;
-    }
-    default: {
-      assert(false);
-    }
-  }
+  if (condition == "BELOW")
+    c = ConstraintCondition::BELOW;
+  else if (condition == "OVER")
+    c = ConstraintCondition::OVER;
+  else if (condition == "EQUAL")
+    c = ConstraintCondition::EQUAL;
+  else
+    assert(false);
+  
   Constraint(name, variable, c);
 }
 
-ghpi::~Constraint() {
+ghpi::Constraint::~Constraint() {
 }

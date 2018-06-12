@@ -1,7 +1,7 @@
 //
 // 2018 Rico Schulz
 //
-
+#include <wiringPi.h>
 
 namespace ghpi {
     // Class for the MCP3008 A/D Converter

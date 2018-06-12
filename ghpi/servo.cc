@@ -14,12 +14,12 @@ void Servo::Initialize() {
 
 void Servo::TurnOn() {
   // Set Servo Position to max angle
-  SetPosition(angle/2);
+  SetPosition(max_angle_/2);
 }
 
 void Servo::TurnOff() {
   // Set Servo Position to min angle
-  SetPosition(angle/-2);
+  SetPosition(max_angle_/-2);
 }
 
 void Servo::SetUpPWM() {
@@ -32,7 +32,7 @@ void Servo::SetUpPWM() {
 int Servo::ConvertAngleToValue(int angle) {
   float value;
   value = angle * (1.f/135.f) + 1.5f; // This gives us the time in ms for the angle
-  value = value * (float)((19200000.f/(GHPI_PWM_CLOCK * GHPI_PWM_RANGE)); // Convert to value
+  value = value * (float)((19200000.f/(GHPI_PWM_CLOCK * GHPI_PWM_RANGE))); // Convert to value
   return (int)value;
 }
 
@@ -41,7 +41,7 @@ void Servo::SetPosition(int angle) {
   SetUpPWM();
   
   // Get PWM Pin for Servo
-  int pwm_pin = GetPinsByUsage(ghpi::PinUsage::PWM).at(0);
+  int pwm_pin = GetPinsByUsage(ghpi::PinUsage::PWM).at(0)->get_number();
   
   // Convert angle to corresponding value
   pwmWrite(pwm_pin, ConvertAngleToValue(angle));
@@ -50,8 +50,9 @@ void Servo::SetPosition(int angle) {
   delay(reaction_time_);
 }
 
-Servo::Servo() : Actuator() {
+Servo::Servo(int max_angle) : Actuator() {
+  max_angle_ = max_angle;
 }
 
-Servo::~Servo() : Actuator() {
+Servo::~Servo() {
 }

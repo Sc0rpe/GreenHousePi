@@ -7,8 +7,8 @@ using ghpi::Pump;
 void Pump::ExecuteAction(Action action) {
   switch(action.get_action_fn()) {
     case ActionFn::AFN_ON: {
-      float* amount = (float*)Action.get_additional_data();
-      if (amount != null)
+      float* amount = (float*)action.get_additional_data();
+      if (amount != NULL)
         Water(*amount);
       break;
     }
@@ -21,7 +21,7 @@ void Pump::ExecuteAction(Action action) {
       break;
     }
     case ActionFn::AFN_RUN: {
-      Run();
+      Run(NULL);
       break;
     }
     default: {
@@ -43,11 +43,10 @@ void Pump::Water(float amount) {
 }
 
 void ghpi::Pump::Print() {
-
 }
 
 Pump::Pump() : Actuator() {
 }
 
-Pump::~Pump() : ~Actuator() {
+Pump::~Pump() {
 }

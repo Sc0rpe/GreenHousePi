@@ -3,17 +3,17 @@
 //
 #include "ldr.h"
 
-std::map<std::string, void*> LDR::get_values() {
-  std::map<std::string, void*> values; 
-  int val = adconverter_.GetValueFromChannel(channel_);
-  values["LIGHT_INTENSITY"] = val;
+std::map<std::string, float> ghpi::LDR::get_values() {
+  std::map<std::string, float> values; 
+  int val = adconverter_->GetValueFromChannel(channel_);
+  values["LIGHT_INTENSITY"] = (float)val;
   return values_;
 }
 
-LDR::LDR() : AnalogSensor() {
+ghpi::LDR::LDR(ghpi::ADConverter *adconverter) : AnalogSensor(adconverter) {
   name_ = "LDR";
   mode_ = OperationMode::AUTONOMOUS;
 }
 
-LDR::~LDR() : ~AnalogSensor() {
+ghpi::LDR::~LDR() {
 }

@@ -54,7 +54,7 @@ namespace ghpi {
     class Device { 
      public:  
       // Functions
-      virtual std::map<std::string, float>* Run(void* env_var) = 0;
+      virtual std::map<std::string, float> Run(void* env_var) = 0;
       virtual void TurnOn();
       virtual void TurnOff();
       virtual void Toggle();

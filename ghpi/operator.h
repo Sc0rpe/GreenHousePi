@@ -33,7 +33,7 @@ namespace ghpi {
       bool ToggleDevice(std::string dname);
       bool TurnOnDevice(std::string dname);
       bool TurnOffDevice(std::string dname);
-      void RegisterDevice(Device &device);
+      void RegisterDevice(Device *device);
       void RegisterConstraint(Constraint constraint);
       std::vector<Action> CheckConstraints(std::map<std::string, float> values);
       void Run();
@@ -69,13 +69,13 @@ namespace ghpi {
       //  RETURN:
       //      true - If a duplicate was found
       //      false - If no duplicate was found
-      bool CheckForDuplicateDevice(Device &device);
+      bool CheckForDuplicateDevice(Device *device);
       
       std::vector<ghpi::Action> ReadMessagesFromQueue();
       
       // Data Members
       
-      std::vector<Device> devices_;
+      std::vector<Device*> devices_;
       
       // Map of Constraints and the Actions to execute to meet them
       // Actions are expectet to be executet to meet the constraint values
