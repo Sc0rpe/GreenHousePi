@@ -32,8 +32,8 @@ namespace ghpi {
     std::string get_variable() const;
     ConstraintCondition get_condition();
     // Constructors
-    Constraint(std::string name, std::string variable, ConstraintCondition condition);
-    Constraint(std::string name, std::string variable, std::string condition);
+    Constraint(std::string name, std::string variable, float val, ConstraintCondition condition);
+    Constraint(std::string name, std::string variable, float val, std::string condition);
     ~Constraint();
     
     // Operators

@@ -18,6 +18,7 @@
 #define DHT_PIN 42
 #define HYGRO_PIN 42
 #define PUMP_PIN 42
+#define LAMP_PIN 42
 #endif
 
 using namespace ghpi;
@@ -26,8 +27,9 @@ int main() {
   
     wiringPiSetup();
     Operator ghoperator;
-    // Instantiate some devices for testing
+    
     #ifdef DEBUG
+      // Instantiate some devices for testing
       DHT22 dht;
       ADConverter adcon(14, 12, 13, 10, 0, 1023);
       Hygrometer hygro(&adcon, 2);
@@ -35,11 +37,15 @@ int main() {
       LDR ldr2(&adcon, 1);
       Servo servo(270);
       Pump pump;
+      Actuator lamp;
+      Actuator fan;
       
       Pin dht_data_pin(DHT_PIN, PinMode::input, PinState::low);
       Pin hygro_pin(HYGRO_PIN, PinMode::output, PinState::high);
       Pin servo_pin(SERVO_PIN, PinMode::pwmoutput, PinState::low);
       Pin pump_pin(PUMP_PIN, PinMode::output, PinState::high);
+      Pin lamp_pin(LAMP_PIN, PinMode::output, PinState::high);
+      Pin fan_pin(FAN_PIN, PinMode::output, PinState::high);
       
       
       // Register pins for the devices
@@ -47,6 +53,8 @@ int main() {
       hygro.RegisterPin(&hygro_pin, PinUsage::SWITCH, OnState::OS_LOW);
       servo.RegisterPin(&servo_pin, PinUsage::PWM, OnState::OS_NONE);
       pump.RegisterPin(&pump_pin, PinUsage::SWITCH, OnState::OS_LOW);
+      lamp.RegisterPin(&lamp_pin, PinUsage::SWITCH, OnState::OS_LOW);
+      fan.RegisterPin(&fan_pin, PinUsage::SWITCH, OnState::OS_LOW);
       
       // Register Devices
       ghoperator.RegisterDevice(&dht);
@@ -55,15 +63,19 @@ int main() {
       ghoperator.RegisterDevice(&pump);
       ghoperator.RegisterDevice(&ldr1);
       ghoperator.RegisterDevice(&ldr2);
+      ghoperator.RegisterDevice(&lamp);
+      ghoperator.RegisterDevice(&fan);
    
       // Creating Constraints
       Constraint temp("TempBelow60°C", EnvironmentValueStrings[EnvironmentValue::TEMPERATURE],
-                        ConstraintConditionStrings[ConstraintCondition::BELOW]);
+                        60.f, ConstraintConditionStrings[ConstraintCondition::BELOW]);
       Constraint hum("HumBelow80%", EnvironmentValueStrings[EnvironmentValue::HUMIDITY],
-                        ConstraintConditionStrings[ConstraintCondition::BELOW]);
-      Constraint light("LightIntOver300", EnvironmentValueStrings[EnvironmentValue::LIGHT_INTENSITY],
-                        ConstraintConditionStrings[ConstraintCondition::OVER]);
-      
+                        80.f, ConstraintConditionStrings[ConstraintCondition::BELOW]);
+      Constraint lightlow("LightIntOver300", EnvironmentValueStrings[EnvironmentValue::LIGHT_INTENSITY],
+                        300.f, ConstraintConditionStrings[ConstraintCondition::OVER]);
+      Constraint lighthigh("LightIntUnder300", EnvironmentValueStrings[EnvironmentValue::LIGHT_INTENSITY],
+                        300.f, ConstraintConditionStrings[ConstraintCondition::BELOW]); 
+                        
       // Creating Actions for Devices
       Action open_roof("OpenRoof", ActionFn::AFN_ON, NULL);
       Action close_roof("CloseRoof", ActionFn::AFN_OFF, NULL);
@@ -73,11 +85,14 @@ int main() {
       // Register Actions on devices
       servo.RegisterAction(open_roof);
       servo.RegisterAction(close_roof);
+      lamp.RegisterAction(turn_off_light);
+      lamp.RegisterAction(turn_on_light);
       
       // Register Constraints
       ghoperator.RegisterConstraint(temp, close_roof);
       ghoperator.RegisterConstraint(hum, open_roof);
-      ghoperator.RegisterConstraint(light, turn_on_light);      
+      ghoperator.RegisterConstraint(lightlow, turn_on_light);
+      ghoperator.RegisterConstraint(lighthigh, turn_off_light);
       
       ghoperator.PrintDevices();
       std::cout << "Start running operator" << std::endl;

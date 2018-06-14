@@ -55,13 +55,14 @@ ghpi::ConstraintCondition ghpi::Constraint::get_condition() {
   return condition_;
 }
 
-ghpi::Constraint::Constraint(std::string name, std::string variable, ConstraintCondition condition) {
+ghpi::Constraint::Constraint(std::string name, std::string variable, float val, ConstraintCondition condition) {
   name_ = name;
+  value_ = val;
   variable_ = variable;
   condition_ = condition;
 }
 
-ghpi::Constraint::Constraint(std::string name, std::string variable, std::string condition) {
+ghpi::Constraint::Constraint(std::string name, std::string variable, float val, std::string condition) {
   ConstraintCondition c;
   
   if (condition == "BELOW")
@@ -73,7 +74,7 @@ ghpi::Constraint::Constraint(std::string name, std::string variable, std::string
   else
     assert(false);
   
-  Constraint(name, variable, c);
+  Constraint(name, variable, val, c);
 }
 
 ghpi::Constraint::~Constraint() {
