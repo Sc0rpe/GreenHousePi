@@ -31,6 +31,9 @@ namespace ghpi {
       ghpi::PinMode get_mode();
       ghpi::PinState get_state();
       ghpi::PinLayout get_layout();
+      Pin(int number, PinMode mode, PinState state);
+      Pin(int number, PinMode mode, PinState state, PinLayout layout);
+      ~Pin();
       
      private:
       // Data Member

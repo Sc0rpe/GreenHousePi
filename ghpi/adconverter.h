@@ -2,6 +2,7 @@
 // 2018 Rico Schulz
 //
 #include <wiringPi.h>
+#include <string>
 
 namespace ghpi {
     // Class for the MCP3008 A/D Converter
@@ -9,6 +10,7 @@ namespace ghpi {
      public:
       // Functions
       int GetValueFromChannel(int channel);
+      std::string get_name();
       ADConverter(int clk_pin, int mosi_pin, int miso_pin, int cs_pin,
                     int min_val, int max_val);
       ~ADConverter();
@@ -24,5 +26,7 @@ namespace ghpi {
       
       int min_val_;
       int max_val_;
+      
+      std::string name_;
     };
 }

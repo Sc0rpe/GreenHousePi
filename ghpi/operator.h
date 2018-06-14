@@ -7,23 +7,18 @@
 #include <map>
 #include <boost/interprocess/shared_memory_object.hpp>
 #include <boost/interprocess/mapped_region.hpp>
+#include "environmentvalue.h"
 #include "device.h"
 #include "action.h"
 #include "actuator.h"
 #include "constraint.h"
+#include "debug.h"
 
 #define MSG_QUEUE_SIZE 1000
 
 using namespace boost::interprocess;
 
 namespace ghpi {
-    
-    enum EnvironmentValue {
-      TEMPERATURE = 0 ,
-      HUMIDITY ,
-      SOIL_MOISTURE ,
-      LIGHT_INTENSITY ,
-    };
     
     class Operator {
      public:
@@ -34,9 +29,11 @@ namespace ghpi {
       bool TurnOnDevice(std::string dname);
       bool TurnOffDevice(std::string dname);
       void RegisterDevice(Device *device);
-      void RegisterConstraint(Constraint constraint);
+      void RegisterConstraint(Constraint constraint, Action action);
       std::vector<Action> CheckConstraints(std::map<std::string, float> values);
       void Run();
+      void PrintDevices();
+      void PrintValues();
       void Clear();
       Operator();
       ~Operator();
@@ -76,10 +73,12 @@ namespace ghpi {
       // Data Members
       
       std::vector<Device*> devices_;
+      std::map<std::string, float> values_;
       
       // Map of Constraints and the Actions to execute to meet them
-      // Actions are expectet to be executet to meet the constraint values
-      std::map<Constraint, Action> constraints_;
+      // Actions are expectet to help meeting the constraint when executet
+      //std::map<Constraint, Action> constraints_;
+      std::map<Constraint, std::vector<Action>> constraints_;
       
       static constexpr const char* const SHM_NAME = "GHPI_Messages";
       

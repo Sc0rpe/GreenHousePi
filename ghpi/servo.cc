@@ -51,6 +51,7 @@ void Servo::SetPosition(int angle) {
 }
 
 Servo::Servo(int max_angle) : Actuator() {
+  name_ = "Servo_" + std::to_string(get_count());
   max_angle_ = max_angle;
 }
 

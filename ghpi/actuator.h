@@ -19,7 +19,7 @@ namespace ghpi {
       Actuator();
       ~Actuator();
       
-      private:
+      protected:
         // Data Member
         std::vector<Action> actions_;
     };

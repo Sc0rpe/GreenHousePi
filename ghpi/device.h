@@ -20,18 +20,19 @@ namespace ghpi {
     
     enum DeviceType {
       SENSOR = 0 ,
-      AKTUATOR ,
+      ACTUATOR ,
       RELAY
     };
-    static const char * DeviceTypeStrings[] = {"SENSOR", "AKTUATOR", "SWITCH", "RELAY"};
+    static const char * DeviceTypeStrings[] = {"SENSOR", "ACTUATOR", "SWITCH", "RELAY"};
     
     // This State describes whether the "switch pins"
     // must be high or low in order the device is turned on.
     enum OnState {
       OS_LOW = 0 ,
-      OS_HIGH = 1
+      OS_HIGH = 1,
+      OS_NONE = 2
     };
-    static const char * OnStateStrings[] = {"LOW", "HIGH"};
+    static const char * OnStateStrings[] = {"LOW", "HIGH", "NONE"};
     
     enum PinUsage {
       SWITCH = 0 ,
@@ -80,6 +81,10 @@ namespace ghpi {
       OperationMode mode_;
       DeviceType type_;
       DeviceState state_;
+      int get_count();
+      
+     private:
+      static int count;
     
     };
 }

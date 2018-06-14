@@ -15,7 +15,7 @@ namespace ghpi {
     std::map<std::string, float> Run(void* env_var) override;
     std::map<std::string, float> get_values() override;
     int ReadSoilMoisture(int channel);
-    Hygrometer(ADConverter *adconverter);
+    Hygrometer(ADConverter *adconverter, int  channel);
     ~Hygrometer();
    
    private:

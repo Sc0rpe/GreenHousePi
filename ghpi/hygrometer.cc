@@ -34,8 +34,8 @@ int ghpi::Hygrometer::ReadSoilMoisture(int channel) {
   return value;
 }
 
-ghpi::Hygrometer::Hygrometer(ADConverter *adconverter) : AnalogSensor(adconverter) {
-  name_ = "Hygrometer";
+ghpi::Hygrometer::Hygrometer(ADConverter *adconverter, int channel) : AnalogSensor(adconverter, channel) {
+  name_ = "Hygrometer_" + std::to_string(get_count());
   mode_ = OperationMode::AUTONOMOUS;
 }
 

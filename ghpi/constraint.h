@@ -4,6 +4,8 @@
 #pragma once
 #include <string>
 #include <cassert>
+#include <iostream>
+#include "debug.h"
 
 namespace ghpi {
   
@@ -17,7 +19,15 @@ namespace ghpi {
   class Constraint {
    public:
     // Functions
+    
+    // Checks if the condition has been met for a given value
+    //  ARGS: 
+    //    value to check for
+    //  RETURNS:
+    //    True - If the condition has been met.
+    //    False - Else.
     bool CheckForValue(float value) const;
+    
     std::string get_name() const;
     std::string get_variable() const;
     ConstraintCondition get_condition();
@@ -25,6 +35,9 @@ namespace ghpi {
     Constraint(std::string name, std::string variable, ConstraintCondition condition);
     Constraint(std::string name, std::string variable, std::string condition);
     ~Constraint();
+    
+    // Operators
+    bool operator<(const Constraint &c2) const;
     
    private:
     // Data Members

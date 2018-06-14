@@ -9,16 +9,30 @@ void ghpi::Operator::Run() {
   // TODO
   std::map<std::string, float> values;
   // Read all Sensor values
+  #ifdef DEBUG
+    std::cout << "[Operator] Reading Sensors" << std::endl;
+  #endif
   std::vector<Device*> sensors = GetDevicesByType(ghpi::DeviceType::SENSOR);
-  for (auto &it : sensors) {
+  for (auto it : sensors) {
+    #ifdef DEBUG
+      std::cout << "[Operator] Reading " << it->get_name() << std::endl;
+    #endif
     std::map<std::string, float> m = it->Run(NULL);
     values.insert(m.begin(), m.end());
   }
+  values_ = values;
+  PrintValues();
   
   // Check Constraints
+  #ifdef DEBUG
+    std::cout << "[Operator] Checking Constraints" << std::endl;
+  #endif
   std::vector<Action> actions;
   actions = CheckConstraints(values);
   
+  #ifdef DEBUG
+    std::cout << "[Operator] Executing Actions" << std::endl;
+  #endif
   // Execute actions to comply with the constraints
   for (auto d_it: devices_) { // Check all devices for being an actuator
     if (ghpi::Actuator *act = dynamic_cast<ghpi::Actuator*>(d_it))
@@ -31,20 +45,44 @@ void ghpi::Operator::Run() {
       }
   }
   
+  #ifdef DEBUG
+    std::cout << "[Operator] Reading from shared memory" << std::endl;
+  #endif
   // Read Messages from shared memory 
   
-  
+  #ifdef DEBUG
+    std::cout << "[Operator] Executing actions from shared memory" << std::endl;
+  #endif
   // Do actions from messages
+}
+
+void ghpi::Operator::RegisterConstraint(Constraint constraint, Action action) {
+    if (constraints_.find(constraint) != constraints_.end()) {
+      // constraint not in the map. add it to the map with the action
+      std::vector<Action> newaction;
+      newaction.push_back(action);
+      constraints_[constraint] = newaction;
+    } else {
+      // Constraint already in the map. Add the action to the vector
+      std::vector<Action>* act = &constraints_[constraint];
+      act->push_back(action);
+    }
+    
 }
 
 std::vector<ghpi::Action> ghpi::Operator::CheckConstraints(std::map<std::string, float> values) {
   // List of Actions to be executed due of constraint violations
   std::vector<ghpi::Action> actions;
+  
+  // Go over the map of constraints and add each action associated with it
+  // to the vector of actions to be executed if the constraint has not been met
   for (auto &c_it: constraints_) {
     for (auto &v_it: values) {
       if (c_it.first.get_variable() == v_it.first) {
-        if (! c_it.first.CheckForValue(v_it.second))
-          actions.push_back(c_it.second);
+        if (! c_it.first.CheckForValue(v_it.second)) {
+          for (auto act_it: c_it.second)
+            actions.push_back(act_it);
+        }
       }
     }
   }
@@ -56,7 +94,6 @@ std::vector<ghpi::Device*> ghpi::Operator::GetDevicesByType(ghpi::DeviceType dty
   for (auto it: devices_) {
     if (it->get_type() == dtype) {
         d.push_back(it);
-        break;
     }
   }
   return d;
@@ -105,6 +142,19 @@ std::vector<ghpi::Action> ghpi::Operator::ReadMessagesFromQueue() {
   // Read Messages from the Queue
   
 }  
+
+void ghpi::Operator::PrintDevices() {
+  for (auto it: devices_) {
+    it->Print();
+    std::cout << std::endl;
+  }
+}
+
+void ghpi::Operator::PrintValues() {
+  for (auto it: values_) {
+    std::cout << it.first << " = " << it.second << std::endl;
+  }
+}
   
 Operator::Operator() {
   // Create shared Memory Segment for message queue

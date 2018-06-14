@@ -38,6 +38,10 @@ std::map<std::string, float> ghpi::Actuator::Run(void* env_var) {
   //}
 }
 
+void ghpi::Actuator::RegisterAction(Action action) {
+  actions_.push_back(action);
+}
+
 std::vector<ghpi::Action> ghpi::Actuator::GetActionsByName(std::string name) {
   std::vector<ghpi::Action> actions;
   
@@ -60,7 +64,8 @@ void ghpi::Actuator::Print() {
 }
 
 ghpi::Actuator::Actuator(): Device() {
-  name_ = "Actuator";
+  name_ = "Actuator_" + std::to_string(get_count());
+  type_ = DeviceType::ACTUATOR;
   mode_ = OperationMode::AUTONOMOUS;
 }
 

@@ -46,6 +46,8 @@ void ghpi::Pump::Print() {
 }
 
 Pump::Pump() : Actuator() {
+  name_ = "Pump_" + std::to_string(get_count());
+  mode_ = OperationMode::AUTONOMOUS;
 }
 
 Pump::~Pump() {

@@ -3,6 +3,12 @@
 //
 #include "ldr.h"
 
+
+std::map<std::string, float> ghpi::LDR::Run(void* env_var) {
+  std::map<std::string, float> vals = get_values();
+  return vals;
+}
+
 std::map<std::string, float> ghpi::LDR::get_values() {
   std::map<std::string, float> values; 
   int val = adconverter_->GetValueFromChannel(channel_);
@@ -10,8 +16,8 @@ std::map<std::string, float> ghpi::LDR::get_values() {
   return values_;
 }
 
-ghpi::LDR::LDR(ghpi::ADConverter *adconverter) : AnalogSensor(adconverter) {
-  name_ = "LDR";
+ghpi::LDR::LDR(ghpi::ADConverter *adconverter, int channel) : AnalogSensor(adconverter, channel) {
+  name_ = "LDR_" + std::to_string(get_count());;
   mode_ = OperationMode::AUTONOMOUS;
 }
 

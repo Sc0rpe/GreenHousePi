@@ -5,6 +5,8 @@
 
 using namespace ghpi;
 
+int Device::count = 0;
+
 void Device::RegisterPin(ghpi::Pin* pin, PinUsage pin_usage, OnState on_state) {
   pins_.push_back(pin);
   pin_usages_[pin] = pin_usage;
@@ -93,7 +95,12 @@ bool ghpi::Device::operator==(const Device &r) const {
     return false;
 }
 
+int ghpi::Device::get_count() {
+  return count;
+}
+
 Device::Device() {
+  ++count;
   state_ = DeviceState::OFF;
   mode_ = OperationMode::AUTONOMOUS;
 }

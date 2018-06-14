@@ -97,8 +97,8 @@ ghpi::DHTData ghpi::DHT22::ReadDht22Dat(int pin) {
 } 
 
 ghpi::DHT22::DHT22() : Sensor() {
-  
-  name_ = "DHT22";
+  name_ = "DHT22_" + std::to_string(get_count());
+  mode_ = OperationMode::AUTONOMOUS;
 }
 
 ghpi::DHT22::~DHT22() {

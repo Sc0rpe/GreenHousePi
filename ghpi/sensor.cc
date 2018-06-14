@@ -20,7 +20,8 @@ void ghpi::Sensor::Print() {
 }
 
 ghpi::Sensor::Sensor() : Device() {
-  name_ = "Sensor";
+  name_ = "Sensor_" + std::to_string(get_count());
+  type_ = DeviceType::SENSOR;
   mode_ = OperationMode::AUTONOMOUS;
 }
 

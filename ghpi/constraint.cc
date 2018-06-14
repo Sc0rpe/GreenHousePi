@@ -7,24 +7,39 @@
 bool ghpi::Constraint::CheckForValue(float value) const {
   switch (condition_) {
     case ConstraintCondition::BELOW: {
-      if (value > value_)
+      if (value > value_) {
+        #ifdef DEBUG
+          std::cout << "[Constraint] Condition BELOW has NOT been met" << std::endl;
+        #endif
         return false;
+      }
       break;
     }
     case ConstraintCondition::OVER: {
-      if (value < value_)
+      if (value < value_) {
+        #ifdef DEBUG
+          std::cout << "[Constraint] Condition OVER has NOT been met" << std::endl;
+        #endif
         return false;
+      }
       break;
     }
     case ConstraintCondition::EQUAL: {
-      if (value != value_)
+      if (value != value_) {
+        #ifdef DEBUG
+          std::cout << "[Constraint] Condition EQUAL has NOT been met" << std::endl;
+        #endif
         return false;
+      }
       break;
     }
     default: {
       assert(false);
     }
   }
+  #ifdef DEBUG
+    std::cout << "[Constraint] Condition has been met" << std::endl;
+  #endif
   return true;
 }
 
@@ -62,4 +77,8 @@ ghpi::Constraint::Constraint(std::string name, std::string variable, std::string
 }
 
 ghpi::Constraint::~Constraint() {
+}
+
+bool ghpi::Constraint::operator<(const Constraint &c2) const {
+  return true;
 }
