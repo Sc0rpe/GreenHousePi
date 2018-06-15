@@ -6,7 +6,7 @@
 ghpi::AnalogSensor::AnalogSensor(ghpi::ADConverter *adconverter, int channel) : Sensor() {
   name_ = "AnalogSensor_" + std::to_string(get_count());
   mode_ = OperationMode::AUTONOMOUS;
-  channel = channel;
+  channel_ = channel;
   adconverter_ = adconverter;
 }
 

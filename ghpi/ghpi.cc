@@ -15,10 +15,11 @@
 
 #ifdef DEBUG
 #define SERVO_PIN 1
-#define DHT_PIN 42
+#define DHT_PIN 8
 #define HYGRO_PIN 42
 #define PUMP_PIN 42
-#define LAMP_PIN 42
+#define LAMP_PIN 16
+#define FAN_PIN 5
 #endif
 
 using namespace ghpi;
@@ -32,7 +33,7 @@ int main() {
       // Instantiate some devices for testing
       DHT22 dht;
       ADConverter adcon(14, 12, 13, 10, 0, 1023);
-      Hygrometer hygro(&adcon, 2);
+      Hygrometer hygro(&adcon, 7);
       LDR ldr1(&adcon, 0);
       LDR ldr2(&adcon, 1);
       Servo servo(270);

@@ -6,7 +6,7 @@
 // supply after measuring (Relay). Use Device::TurnOn() and Device::TurnOff() 
 #pragma once
 #include "analogsensor.h"
-
+#define HYG_MEASUREMENTS 10
 namespace ghpi {
 
   class Hygrometer : public AnalogSensor {

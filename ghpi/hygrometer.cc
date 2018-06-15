@@ -26,7 +26,10 @@ int ghpi::Hygrometer::ReadSoilMoisture(int channel) {
   TurnOn();
   
   // Read value from the A/D - converter channel
-  value = adconverter_->GetValueFromChannel(channel);
+  for (int i=0; i < HYG_MEASUREMENTS; ++i)
+    value += adconverter_->GetValueFromChannel(channel);
+  
+  value = value / HYG_MEASUREMENTS;
   
   // Turn off to avoid electrolysis
   TurnOff();
@@ -37,6 +40,7 @@ int ghpi::Hygrometer::ReadSoilMoisture(int channel) {
 ghpi::Hygrometer::Hygrometer(ADConverter *adconverter, int channel) : AnalogSensor(adconverter, channel) {
   name_ = "Hygrometer_" + std::to_string(get_count());
   mode_ = OperationMode::AUTONOMOUS;
+  channel_ = channel;
 }
 
 ghpi::Hygrometer::~Hygrometer() {

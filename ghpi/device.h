@@ -81,6 +81,7 @@ namespace ghpi {
       OperationMode mode_;
       DeviceType type_;
       DeviceState state_;
+      int id_;
       int get_count();
       
      private:

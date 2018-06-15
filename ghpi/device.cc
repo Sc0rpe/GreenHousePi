@@ -103,6 +103,7 @@ Device::Device() {
   ++count;
   state_ = DeviceState::OFF;
   mode_ = OperationMode::AUTONOMOUS;
+  id_ = get_count();
 }
 
 Device::~Device() {

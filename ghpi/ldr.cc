@@ -13,12 +13,13 @@ std::map<std::string, float> ghpi::LDR::get_values() {
   std::map<std::string, float> values; 
   int val = adconverter_->GetValueFromChannel(channel_);
   values["LIGHT_INTENSITY"] = (float)val;
-  return values_;
+  return values;
 }
 
 ghpi::LDR::LDR(ghpi::ADConverter *adconverter, int channel) : AnalogSensor(adconverter, channel) {
   name_ = "LDR_" + std::to_string(get_count());;
   mode_ = OperationMode::AUTONOMOUS;
+  channel_ = channel;
 }
 
 ghpi::LDR::~LDR() {
