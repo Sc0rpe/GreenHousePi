@@ -18,7 +18,18 @@ void ghpi::Operator::Run() {
       std::cout << "[Operator] Reading " << it->get_name() << std::endl;
     #endif
     std::map<std::string, float> m = it->Run(NULL);
-    values.insert(m.begin(), m.end());
+    for (auto it: m) {
+      // Check if the key already exists in the map
+      if (values.find(it.first) != values.end()) {
+        // Retrieve the value and calculate the median
+        float val = values[it.first];
+        val = (val + it.second) / 2.f;
+        values[it.first] = val;
+      } else {
+        values.insert(it);
+      }
+    }
+    //values.insert(m.begin(), m.end());
   }
   values_ = values;
   PrintValues();
