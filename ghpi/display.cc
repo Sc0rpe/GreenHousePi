@@ -64,15 +64,14 @@ void display::startTest(void)
 
 
 // float to string
-void typeFloat(float f)   {
-  char buffer[20];
-  sprintf(buffer, "%4.2f",  f);
-  writeLine(buffer);
+void typeFloat(float f){
+	char buffer[20];
+	sprintf(buffer, "%4.2f",  f);
+	writeLine(buffer);
 }
 
 // int to string
-void display::typeInt(int i)
-{
+void display::typeInt(int i){
     char buffer[20];
     sprintf(buffer, "%d",  i);
     writeLine(buffer);
@@ -81,32 +80,30 @@ void display::typeInt(int i)
 // This function clears the LCD
 // and resets the current location
 // to the first line (0x80)
-void display::ClrLcd(void)
-{
+void display::ClrLcd(void){
     lcd_byte(0x01, LCD_CMD);
     lcd_byte(0x02, LCD_CMD);
 }
 
 // Set the current location on LCD
-void display::lcdLoc(int line)
-{
+void display::lcdLoc(int line){
     lcd_byte(line, LCD_CMD);
 }
 
 // out char to LCD at current position
-void display::typeChar(char val)   {
+void display::typeChar(char val){
 
   lcd_byte(val, LCD_CHR);
 }
 
 // this allows use of any size string
-void display::writeLine(const char *s)   {
+void display::writeLine(const char *s){
 
   while ( *s ) lcd_byte(*(s++), LCD_CHR);
 
 }
 
-void display::lcd_byte(int bits, int mode)   {
+void display::lcd_byte(int bits, int mode){
 
   //Send byte to data pins
   // bits = the data
@@ -135,7 +132,7 @@ void display::lcd_toggle_enable(int bits)   {
   delayMicroseconds(500);
 }
 
-void display::lcd_init()   {
+void display::lcd_init(){
   // Initialise display
   lcd_byte(0x33, LCD_CMD); // Initialise
   lcd_byte(0x32, LCD_CMD); // Initialise

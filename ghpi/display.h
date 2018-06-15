@@ -10,6 +10,7 @@
 namespace ghpi {
 	public:
 		Display();
+		~Display();
 		void lcd_init(void);
 		void lcd_byte(int bits, int mode);
 		void lcd_toggle_enable(int bits);
@@ -20,7 +21,7 @@ namespace ghpi {
 		void writeLine(const char *s);
 		void typeChar(char val);
 		int fd;  // seen by all subroutines
-		
+		void startTest(void);
 }
 
 
