@@ -29,8 +29,8 @@ servo:
 action:
 	g++ -c -std=c++0x -I/usr/local/inclu -L/usr/local/lib -lwiringPi action.cc
 display:
-	g++ -c -std=c++0x -I/usr/local/inclu -L/usr/local/lib -lwiringPi display.cc
+	g++ -c -std=c++0x -I/usr/local/inclu -L/usr/local/lib -lwiringPi lcddisplay.cc
 display_test:
-	g++ -c -std=c++0x -I/usr/local/inclu -L/usr/local/lib -lwiringPi display.cc display_test.cc
+	g++ -c -std=c++0x -I/usr/local/inclu -L/usr/local/lib -lwiringPi lcddisplay.cc display_test.cc
 main : 
 	g++ -std=c++0x -I/usr/local/inclu -I/usr/local/include/boost -L/usr/local/lib -lwiringPi -lrt ghpi.cc operator.cc device.cc sensor.cc pump.cc actuator.cc analogsensor.cc ldr.cc hygrometer.cc dht22.cc pin.cc servo.cc action.cc constraint.cc adconverter.cc -o ghpi.o
