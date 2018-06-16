@@ -29,7 +29,6 @@ void ghpi::Operator::Run() {
         values.insert(it);
       }
     }
-    //values.insert(m.begin(), m.end());
   }
   values_ = values;
   PrintValues();
@@ -42,7 +41,7 @@ void ghpi::Operator::Run() {
   actions = CheckConstraints(values);
   
   #ifdef DEBUG
-    std::cout << "[Operator] Actions to be executet " << actions.size() << std::endl;
+    std::cout << "[Operator] Actions to be executed " << actions.size() << std::endl;
   #endif
   
   #ifdef DEBUG
@@ -53,11 +52,11 @@ void ghpi::Operator::Run() {
     // Check all devices for being an actuator
     if (ghpi::Actuator *act = dynamic_cast<ghpi::Actuator*>(d_it))
       // Go through all actions to be executed
-      for (auto &a_it: actions) { 
+      for (auto const &a_it: actions) {
         std::vector<Action> d_actions = act->GetActionsByName(a_it.get_name()); // Retrieve actions the current device can execute
-        for (auto &da_it: d_actions) {
+        for (auto const &da_it: d_actions) {
           act->ExecuteAction(a_it); // If they match we have the right device -> execute!
-          std::cout << "["<<act->get_name() << "]" << " executing action: " << a_it.get_name() << std::endl;
+          std::cout << "[" << act->get_name() << "]" << " executing action: " << a_it.get_name() << std::endl;
         }     
       }
   }
@@ -78,44 +77,42 @@ void ghpi::Operator::Run() {
 
 void ghpi::Operator::RegisterConstraint(Constraint constraint, Action action) {
     if (constraints_.find(constraint) == constraints_.end()) {
-      // constraint not in the map. add it to the map with the action
+      // Constraint not in the map. Add it to the map with the action.
       std::vector<Action> newaction;
       newaction.push_back(action);
       constraints_[constraint] = newaction;
-      std::cout << "[Operator] added constraint " << constraint.get_name() << std::endl;
+      #ifdef DEBUG
+        std::cout << "[Operator] added constraint " << constraint.get_name() << std::endl;
+      #endif
     } else {
-      // Constraint already in the map. Add the action to the vector
+      // Constraint already in the map. Add the action to the vector if not already in it.
       std::vector<Action>* act = &constraints_[constraint];
-      act->push_back(action);
-      std::cout << "[Operator] added action to existing constraint " << constraint.get_name() << std::endl;
-    }
-    
+      if (std::find(act->begin(), act->end(), action) == act->end()) {
+        act->push_back(action);
+        std::cout << "[Operator] added action " << action.get_name() << " to existing constraint " << constraint.get_name() << std::endl;
+      }
+    }    
 }
 
 std::vector<ghpi::Action> ghpi::Operator::CheckConstraints(std::map<std::string, float> values) {
-  #ifdef DEBUG
-    std::cout << "[Operator] Checking " << constraints_.size() << " Constraints" << std::endl;
-  #endif
   // List of Actions to be executed due of constraint violations
   std::vector<ghpi::Action> actions;
   // Go over the map of constraints and add each action associated with it
   // to the vector of actions to be executed if the constraint has not been met
   for (auto &c_it: constraints_) {
     for (auto &v_it: values) {
-      std::cout << "Checking variable " << c_it.first.get_variable() << " = " << v_it.first << std::endl;
       if (c_it.first.get_variable() == v_it.first) {
-        if (c_it.first.CheckForValue(v_it.second)) {
+        if (!c_it.first.CheckForValue(v_it.second)) {
+            // Constraint has not been met, add action
+            std::cout << "Constraint " << c_it.first.get_name() << " has not been met" << std::endl;
             actions.insert(actions.end(), c_it.second.begin(), c_it.second.end());
+        } else {
+          std::cout << "Constraint " << c_it.first.get_name() << " has been met" << std::endl;
         }
         break;
       }
     }
-  }
-  
-  #ifdef DEBUG
-    std::cout << "[Operator] Returning " << actions.size() << " Actions" << std::endl;
-  #endif
-  
+  }  
   return actions;
 }
 
@@ -174,14 +171,14 @@ std::vector<ghpi::Action> ghpi::Operator::ReadMessagesFromQueue() {
 }  
 
 void ghpi::Operator::PrintDevices() {
-  for (auto it: devices_) {
+  for (auto const it: devices_) {
     it->Print();
     std::cout << std::endl;
   }
 }
 
 void ghpi::Operator::PrintValues() {
-  for (auto &it: values_) {
+  for (auto const &it: values_) {
     std::cout << it.first << " = " << it.second << std::endl;
   }
 }

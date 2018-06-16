@@ -17,8 +17,8 @@ namespace ghpi {
   class Action {
    public:
     // Functions
-    std::string get_name();
-    ActionFn get_action_fn();
+    std::string get_name() const;
+    ActionFn get_action_fn() const;
     void* get_additional_data();
     void Print();
     Action();
@@ -30,6 +30,8 @@ namespace ghpi {
     //    action_fn: Action to be executed out of the ActionFn enum
     //    add_data: Additional action data. Null for the most. ml to water for pump
     Action(std::string name, ActionFn action_fn, void* add_data);
+    
+    bool operator==(Action const &a2) const;
     
    private:
     // Data Members

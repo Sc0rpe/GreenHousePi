@@ -3,11 +3,11 @@
 //
 #include "action.h"
 
-std::string ghpi::Action::get_name() {
+std::string ghpi::Action::get_name() const {
   return name_;
 }
 
-ghpi::ActionFn ghpi::Action::get_action_fn() {
+ghpi::ActionFn ghpi::Action::get_action_fn() const {
   return action_fn_;
 }
 
@@ -27,4 +27,10 @@ ghpi::Action::Action(std::string name, ActionFn action_fn, void* add_data) {
 
 ghpi::Action::~Action() {
 
+}
+
+bool ghpi::Action::operator==(Action const &a2) const {
+  if (get_name() == a2.get_name())
+    return true;
+  return false;
 }

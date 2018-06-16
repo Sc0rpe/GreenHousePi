@@ -36,10 +36,10 @@ int main() {
       Hygrometer hygro(&adcon, 7);
       LDR ldr1(&adcon, 0);
       LDR ldr2(&adcon, 1);
-      Servo servo(270);
+      Servo servo(270, 3000);
       Pump pump;
-      Actuator lamp;
-      Actuator fan;
+      Actuator lamp("Lamp");
+      Actuator fan("Fan");
       
       Pin dht_data_pin(DHT_PIN, PinMode::input, PinState::low);
       Pin hygro_pin(HYGRO_PIN, PinMode::output, PinState::high);

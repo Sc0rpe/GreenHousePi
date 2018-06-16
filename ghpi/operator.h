@@ -4,6 +4,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <map>
 #include <unordered_map>
 #include <boost/interprocess/shared_memory_object.hpp>

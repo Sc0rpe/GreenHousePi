@@ -50,9 +50,10 @@ void Servo::SetPosition(int angle) {
   delay(reaction_time_);
 }
 
-Servo::Servo(int max_angle) : Actuator() {
+Servo::Servo(int max_angle, int reaction_time) : Actuator() {
   name_ = "Servo_" + std::to_string(get_count());
   max_angle_ = max_angle;
+  reaction_time_ = reaction_time;
 }
 
 Servo::~Servo() {
