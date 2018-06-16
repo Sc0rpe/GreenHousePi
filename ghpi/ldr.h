@@ -1,6 +1,7 @@
 //
 // 2018 Rico Schulz
 //
+#pragma once
 #include "sensor.h"
 #include "analogsensor.h"
 

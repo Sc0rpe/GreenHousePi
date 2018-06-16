@@ -15,7 +15,7 @@ std::map<std::string, float> ghpi::Hygrometer::get_values() {
   int soil_mois = ReadSoilMoisture(channel_);
   
   // add data to return map
-  values["SM"] =  (float)soil_mois;
+  values[EnvironmentValueStrings[EnvironmentValue::SOIL_MOISTURE]] =  (float)soil_mois;
   
   return values;
 }

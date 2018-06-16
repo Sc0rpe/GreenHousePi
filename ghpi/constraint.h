@@ -34,10 +34,12 @@ namespace ghpi {
     // Constructors
     Constraint(std::string name, std::string variable, float val, ConstraintCondition condition);
     Constraint(std::string name, std::string variable, float val, std::string condition);
+    Constraint(std::string name, std::string variable, float val);
     ~Constraint();
     
     // Operators
     bool operator<(const Constraint &c2) const;
+    bool operator==(const Constraint &c2) const;
     
    private:
     // Data Members

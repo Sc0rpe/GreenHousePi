@@ -3,6 +3,7 @@
 //
 #pragma once
 #include "device.h"
+#include "environmentvalue.h"
 
 
 namespace ghpi {

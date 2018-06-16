@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <unordered_map>
 #include <boost/interprocess/shared_memory_object.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 #include "environmentvalue.h"
@@ -12,13 +13,36 @@
 #include "action.h"
 #include "actuator.h"
 #include "constraint.h"
+//#include "lcddisplay.h"
 #include "debug.h"
 
 #define MSG_QUEUE_SIZE 1000
 
 using namespace boost::interprocess;
 
+// Injecting a custom hash function for our unordered_map of constraints
+namespace std {
+    template <>
+    struct hash<ghpi::Constraint>
+    {
+      std::size_t operator()(const ghpi::Constraint& c) const
+      {
+        using std::size_t;
+        using std::hash;
+        using std::string;
+
+        // Compute individual hash values for first,
+        // second and third and combine them using XOR
+        // and bit shifting:
+
+        return (hash<string>()(c.get_name()));
+      }
+    };  
+}
+
 namespace ghpi {
+  
+
     
     class Operator {
      public:
@@ -34,7 +58,9 @@ namespace ghpi {
       void Run();
       void PrintDevices();
       void PrintValues();
+      void PrintConstraints();
       void Clear();
+      //void Set_LCDDisplay(LCDDisplay* display);
       Operator();
       ~Operator();
       
@@ -72,13 +98,14 @@ namespace ghpi {
       
       // Data Members
       
+      //LCDDisplay* display_;
       std::vector<Device*> devices_;
       std::map<std::string, float> values_;
       
       // Map of Constraints and the Actions to execute to meet them
       // Actions are expectet to help meeting the constraint when executet
       //std::map<Constraint, Action> constraints_;
-      std::map<Constraint, std::vector<Action>> constraints_;
+      std::unordered_map<Constraint, std::vector<Action>> constraints_;
       
       static constexpr const char* const SHM_NAME = "GHPI_Messages";
       

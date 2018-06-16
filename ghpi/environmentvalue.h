@@ -1,3 +1,4 @@
+#pragma once
 namespace ghpi {
   enum EnvironmentValue {
     TEMPERATURE = 0 ,
@@ -5,5 +6,5 @@ namespace ghpi {
     SOIL_MOISTURE ,
     LIGHT_INTENSITY ,
   };
-  static const char * EnvironmentValueStrings[] = {"TEMP", "HUM", "SOILMOIS", "LIGHT"};
+  static const char * EnvironmentValueStrings[] = {"TEMP", "HUM", "SM", "LIGHT_INTENSITY"};
 }

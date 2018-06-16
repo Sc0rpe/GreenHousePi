@@ -12,7 +12,7 @@ std::map<std::string, float> ghpi::LDR::Run(void* env_var) {
 std::map<std::string, float> ghpi::LDR::get_values() {
   std::map<std::string, float> values; 
   int val = adconverter_->GetValueFromChannel(channel_);
-  values["LIGHT_INTENSITY"] = (float)val;
+  values[EnvironmentValueStrings[EnvironmentValue::LIGHT_INTENSITY]] = (float)val;
   return values;
 }
 

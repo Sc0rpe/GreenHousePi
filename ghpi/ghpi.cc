@@ -94,8 +94,10 @@ int main() {
       ghoperator.RegisterConstraint(hum, open_roof);
       ghoperator.RegisterConstraint(lightlow, turn_on_light);
       ghoperator.RegisterConstraint(lighthigh, turn_off_light);
+
       
       ghoperator.PrintDevices();
+      ghoperator.PrintConstraints();
       std::cout << "Start running operator" << std::endl;
       while (true) {
         ghoperator.Run();

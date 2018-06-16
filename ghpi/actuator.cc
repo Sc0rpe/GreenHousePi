@@ -49,7 +49,6 @@ std::vector<ghpi::Action> ghpi::Actuator::GetActionsByName(std::string name) {
     if (it.get_name() == name)
       actions.push_back(it);
   }
-  
   return actions;
 }
 

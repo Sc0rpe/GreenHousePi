@@ -10,8 +10,8 @@ std::map<std::string, float> ghpi::DHT22::get_values() {
   DHTData d = ReadDht22Dat(GetPinsByUsage(PinUsage::BI_DATA).at(0)->get_number());
   
   // add data to return map
-  values["TEMP"] = d.temp; 
-  values["HUM"] =  d.hum;
+  values[EnvironmentValueStrings[EnvironmentValue::TEMPERATURE]] = d.temp; 
+  values[EnvironmentValueStrings[EnvironmentValue::HUMIDITY]] =  d.hum;
   
   return values;
 }
