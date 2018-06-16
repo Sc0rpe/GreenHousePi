@@ -11,6 +11,8 @@ void Device::RegisterPin(ghpi::Pin* pin, PinUsage pin_usage, OnState on_state) {
   pins_.push_back(pin);
   pin_usages_[pin] = pin_usage;
   pin_on_states_[pin] = on_state;
+  // Initialize the pin 
+  pin->Init();
 }
 
 void Device::TurnOn() {
