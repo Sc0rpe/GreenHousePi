@@ -55,6 +55,7 @@ std::vector<ghpi::Action> ghpi::Actuator::GetActionsByName(std::string name) con
 void ghpi::Actuator::Print() {
   std::cout << "Actuator{";
   Device::Print();
+  std::cout << std::endl;
   for (auto &it: actions_) {
     it.Print();
     std::cout << std::endl;
