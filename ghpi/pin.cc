@@ -7,6 +7,40 @@ using ghpi::PinMode;
 using ghpi::PinState;
 using ghpi::PinLayout;
 
+void ghpi::Pin::Init() {
+  int mode = -1;
+  int state = 0;
+  
+  switch (mode_) {
+    case PinMode::output: {
+      mode = OUTPUT;
+      break;
+    }
+    case PinMode::input: {
+      mode = INPUT;
+      break;
+    }
+    case PinMode::pwmoutput: {
+      mode = PWM_OUTPUT;
+      break;
+    }    
+  }
+  
+  switch (state_) {
+    case PinState::high: {
+      state = 1;
+      break;
+    }
+    case PinState::low: {
+      state = 0;
+      break;
+    }
+  }
+  
+  pinMode(number_, mode);
+  digitalWrite(number_, state);
+}
+
 std::string ghpi::Pin::get_name() {
   return name_;
 }
