@@ -6,7 +6,7 @@
 #include <wiringPi.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "debug.h"
+//#include "debug.h"
 
 namespace ghpi {
   class LCDDisplay {

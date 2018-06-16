@@ -31,8 +31,7 @@ void ghpi::LCDDisplay::startTest(void)
 
     lcd_init(); // setup LCD
 
-    while(1)
-    {
+    while(1){
         lcdLoc(LINE1);
         writeLine("Using wiringPi");
         lcdLoc(LINE2);
@@ -92,18 +91,15 @@ void ghpi::LCDDisplay::lcdLoc(int line){
 // out char to LCD at current position
 void ghpi::LCDDisplay::typeChar(char val){
 
-  lcd_byte(val, LCD_CHR);
+    lcd_byte(val, LCD_CHR);
 }
 
 // this allows use of any size string
 void ghpi::LCDDisplay::writeLine(const char *s){
-
-  while ( *s ) lcd_byte(*(s++), LCD_CHR);
-
+    while ( *s ) lcd_byte(*(s++), LCD_CHR);
 }
 
 void ghpi::LCDDisplay::lcd_byte(int bits, int mode){
-
   //Send byte to data pins
   // bits = the data
   // mode = 1 for data, 0 for command
@@ -123,27 +119,27 @@ void ghpi::LCDDisplay::lcd_byte(int bits, int mode){
 }
 
 void ghpi::LCDDisplay::lcd_toggle_enable(int bits)   {
-  // Toggle enable pin on LCD display
-  delayMicroseconds(500);
-  wiringPiI2CReadReg8(fd, (bits | ENABLE));
-  delayMicroseconds(500);
-  wiringPiI2CReadReg8(fd, (bits & ~ENABLE));
-  delayMicroseconds(500);
+    // Toggle enable pin on LCD display
+    delayMicroseconds(500);
+    wiringPiI2CReadReg8(fd, (bits | ENABLE));
+    delayMicroseconds(500);
+    wiringPiI2CReadReg8(fd, (bits & ~ENABLE));
+    delayMicroseconds(500);
 }
 
 void ghpi::LCDDisplay::lcd_init(){
-  // Initialise display
-  lcd_byte(0x33, LCD_CMD); // Initialise
-  lcd_byte(0x32, LCD_CMD); // Initialise
-  lcd_byte(0x06, LCD_CMD); // Cursor move direction
-  lcd_byte(0x0C, LCD_CMD); // 0x0F On, Blink Off
-  lcd_byte(0x28, LCD_CMD); // Data length, number of lines, font size
-  lcd_byte(0x01, LCD_CMD); // Clear display
-  delayMicroseconds(500);
+    // Initialise display
+    lcd_byte(0x33, LCD_CMD); // Initialise
+    lcd_byte(0x32, LCD_CMD); // Initialise
+    lcd_byte(0x06, LCD_CMD); // Cursor move direction
+    lcd_byte(0x0C, LCD_CMD); // 0x0F On, Blink Off
+    lcd_byte(0x28, LCD_CMD); // Data length, number of lines, font size
+    lcd_byte(0x01, LCD_CMD); // Clear display
+    delayMicroseconds(500);
 }
 
 ghpi::LCDDisplay::LCDDisplay() {
-  lcd_init();
+    lcd_init();
 }
 
 ghpi::LCDDisplay::~LCDDisplay() {

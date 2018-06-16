@@ -1,9 +1,10 @@
-#include "display.h"
+#include "lcddisplay.h"
 
+using namespace ghpi;
 
 int main(void)
 {
-	Display display = new Display();
+	LCDDisplay display;
 	display.startTest();
 	return 0;
 }
