@@ -69,6 +69,7 @@ namespace ghpi {
       DeviceState get_state();
       DeviceType get_type();
       bool operator==(const Device &r) const;
+      Device(std::string name);
       Device();
       ~Device();
       

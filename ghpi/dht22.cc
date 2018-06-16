@@ -7,7 +7,15 @@ using ghpi::dht22_dat;
 
 std::map<std::string, float> ghpi::DHT22::get_values() {
   std::map<std::string, float> values;
-  DHTData d = ReadDht22Dat(GetPinsByUsage(PinUsage::BI_DATA).at(0)->get_number());
+  DHTData d;
+  int attempts = 0;
+  // Try reading values as long as we do not have succes
+  // but not more often than MAX_FAILS
+  do {
+    d = ReadDht22Dat(GetPinsByUsage(PinUsage::BI_DATA).at(0)->get_number());
+    attempts++;
+    delay(2000);
+  } while (d.temp == -1 && d.hum == -1 && attempts < MAX_FAILS);
   
   // add data to return map
   values[EnvironmentValueStrings[EnvironmentValue::TEMPERATURE]] = d.temp; 

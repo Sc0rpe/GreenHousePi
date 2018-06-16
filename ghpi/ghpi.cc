@@ -9,7 +9,6 @@
 #include "hygrometer.h"
 #include "servo.h"
 #include "pump.h"
-//#include "action.h"
 #include "debug.h"
 
 
@@ -20,6 +19,7 @@
 #define PUMP_PIN 42
 #define LAMP_PIN 16
 #define FAN_PIN 5
+#define INTERVALL 8000
 #endif
 
 using namespace ghpi;
@@ -36,10 +36,10 @@ int main() {
       Hygrometer hygro(&adcon, 7);
       LDR ldr1(&adcon, 0);
       LDR ldr2(&adcon, 1);
-      Servo servo(270);
+      Servo servo(270, 3000);
       Pump pump;
-      Actuator lamp;
-      Actuator fan;
+      Actuator lamp("Lamp");
+      Actuator fan("Fan");
       
       Pin dht_data_pin(DHT_PIN, PinMode::input, PinState::low);
       Pin hygro_pin(HYGRO_PIN, PinMode::output, PinState::high);
@@ -99,9 +99,10 @@ int main() {
       ghoperator.PrintDevices();
       ghoperator.PrintConstraints();
       std::cout << "Start running operator" << std::endl;
+      std::cout << "Running in intervalls of " << INTERVALL << " milliseconds" << std::endl;
       while (true) {
         ghoperator.Run();
-        delay(4000);
+        delay(INTERVALL);
       }
    
     #endif

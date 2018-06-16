@@ -11,6 +11,8 @@ void Device::RegisterPin(ghpi::Pin* pin, PinUsage pin_usage, OnState on_state) {
   pins_.push_back(pin);
   pin_usages_[pin] = pin_usage;
   pin_on_states_[pin] = on_state;
+  // Initialize the pin 
+  pin->Init();
 }
 
 void Device::TurnOn() {
@@ -38,7 +40,7 @@ void Device::Toggle() {
 }
 
 void ghpi::Device::Print() {
-  std::cout << "Device{" << name_ << ","
+  std::cout << "Device{" << "ID=" << id_ << "," << name_ << ","
     << DeviceTypeStrings[type_] << "," 
     << OperationModeStrings[mode_] << "," 
     << DeviceStateStrings[state_] << "}" ;
@@ -99,8 +101,17 @@ int ghpi::Device::get_count() {
   return count;
 }
 
+Device::Device(std::string name) {
+  ++count;
+  name_ = name;
+  state_ = DeviceState::OFF;
+  mode_ = OperationMode::AUTONOMOUS;
+  id_ = get_count();
+}
+
 Device::Device() {
   ++count;
+  name_ = "Device";
   state_ = DeviceState::OFF;
   mode_ = OperationMode::AUTONOMOUS;
   id_ = get_count();

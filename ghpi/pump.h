@@ -9,7 +9,7 @@ namespace ghpi {
     class Pump: public Actuator {
      public:
       // Functions
-      void ExecuteAction(Action action);
+      void ExecuteAction(Action action) override;
       Pump();
       ~Pump();
       

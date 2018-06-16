@@ -6,6 +6,7 @@
 
 // define MAXTIMINGS for ReadDht22Dat function
 #define MAXTIMINGS 85
+#define MAX_FAILS 8
 
 namespace ghpi {
   

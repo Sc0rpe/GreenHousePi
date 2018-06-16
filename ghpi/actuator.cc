@@ -42,10 +42,10 @@ void ghpi::Actuator::RegisterAction(Action action) {
   actions_.push_back(action);
 }
 
-std::vector<ghpi::Action> ghpi::Actuator::GetActionsByName(std::string name) {
+std::vector<ghpi::Action> ghpi::Actuator::GetActionsByName(std::string name) const {
   std::vector<ghpi::Action> actions;
   
-  for (auto &it: actions_) {
+  for (auto const &it: actions_) {
     if (it.get_name() == name)
       actions.push_back(it);
   }
@@ -55,11 +55,17 @@ std::vector<ghpi::Action> ghpi::Actuator::GetActionsByName(std::string name) {
 void ghpi::Actuator::Print() {
   std::cout << "Actuator{";
   Device::Print();
+  std::cout << std::endl;
   for (auto &it: actions_) {
     it.Print();
     std::cout << std::endl;
   }
   std::cout << "}";
+}
+
+ghpi::Actuator::Actuator(std::string name): Device(name) {
+  type_ = DeviceType::ACTUATOR;
+  mode_ = OperationMode::AUTONOMOUS;
 }
 
 ghpi::Actuator::Actuator(): Device() {

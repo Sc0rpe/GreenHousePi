@@ -11,10 +11,10 @@ namespace ghpi {
   
   class Servo : public Actuator {
    public:
-    void TurnOn();
-    void TurnOff();
+    void TurnOn() override;
+    void TurnOff() override;
     void Initialize();
-    Servo(int max_angle);
+    Servo(int max_angle, int reaction_time);
     ~Servo();
     
    private:
