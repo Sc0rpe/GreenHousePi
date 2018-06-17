@@ -72,7 +72,8 @@ void ghpi::Operator::Run() {
   // Do actions from messages
   
   // Refresh display values
-  //display_->writeLine();
+  std::thread showvals(&ghpi::Operator::RefreshDisplay, std::ref(values), std::ref(*display_));
+  showvals.detach();
 }
 
 void ghpi::Operator::RegisterConstraint(Constraint constraint, Action action) {
@@ -189,10 +190,28 @@ void ghpi::Operator::PrintConstraints() {
   }
 }
 
-/*
+
+void Operator::RefreshDisplay(const std::map<std::string, float> &values, LCDDisplay &disp) {
+  int num_lines = 0;
+  disp.ClrLcd();
+  for (auto const &it: values) {
+    std::string line = it.first + " = " + std::to_string(it.second);
+    disp.writeLine(line.c_str());
+    ++num_lines;
+    if (num_lines >= LCDDisplay::LINES) {
+      delay(2000);
+      disp.ClrLcd();
+      num_lines = 0;
+    }
+  }
+  #ifdef DEBUG
+    std::cout << "LCD Refresh finished" << std::endl;
+  #endif
+}
+
 void Operator::Set_LCDDisplay(LCDDisplay* display) {
   display_ = display;
-}*/
+}
   
 Operator::Operator() {
   // Create shared Memory Segment for message queue

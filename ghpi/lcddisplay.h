@@ -24,6 +24,8 @@ namespace ghpi {
 		void startTest(void);
     LCDDisplay();
 		~LCDDisplay();
+    
+    const static int LINES;
   };
 }
 

@@ -21,6 +21,9 @@
 #define LCD_BACKLIGHT_OFF  0x00  // Off
 #define ENABLE  0b00000100 // Enable bit
 
+const int ghpi::LCDDisplay::LINES = 4;
+
+
 void ghpi::LCDDisplay::startTest(void)
 {
 
@@ -55,9 +58,6 @@ void ghpi::LCDDisplay::startTest(void)
         delay(3000);
         ClrLcd();
     }
-
-    return 0;
-
 }
 
 
