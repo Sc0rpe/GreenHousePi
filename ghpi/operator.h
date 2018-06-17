@@ -2,6 +2,8 @@
 // 2018 Rico Schulz
 //
 #pragma once
+#include <thread>
+#include <functional>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -14,7 +16,7 @@
 #include "action.h"
 #include "actuator.h"
 #include "constraint.h"
-//#include "lcddisplay.h"
+#include "lcddisplay.h"
 #include "debug.h"
 
 #define MSG_QUEUE_SIZE 1000
@@ -43,8 +45,6 @@ namespace std {
 
 namespace ghpi {
   
-
-    
     class Operator {
      public:
       // Functions
@@ -57,11 +57,12 @@ namespace ghpi {
       void RegisterConstraint(Constraint constraint, Action action);
       std::vector<Action> CheckConstraints(std::map<std::string, float> values);
       void Run();
+      static void RefreshDisplay(const std::map<std::string, float> &values, LCDDisplay &disp);
       void PrintDevices();
       void PrintValues();
       void PrintConstraints();
       void Clear();
-      //void Set_LCDDisplay(LCDDisplay* display);
+      void Set_LCDDisplay(LCDDisplay* display);
       Operator();
       ~Operator();
       
@@ -99,7 +100,7 @@ namespace ghpi {
       
       // Data Members
       
-      //LCDDisplay* display_;
+      LCDDisplay* display_;
       std::vector<Device*> devices_;
       std::map<std::string, float> values_;
       
