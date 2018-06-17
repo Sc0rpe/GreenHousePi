@@ -33,4 +33,4 @@ display:
 display_test:
 	g++ -c -std=c++0x -I/usr/local/inclu -L/usr/local/lib -lwiringPi lcddisplay.cc display_test.cc
 main : 
-	g++ -std=c++0x -I/usr/local/inclu -I/usr/local/include/boost -L/usr/local/lib -lwiringPi -lwiringPiI2C -lrt -lpthread ghpi.cc operator.cc device.cc sensor.cc pump.cc actuator.cc analogsensor.cc ldr.cc hygrometer.cc dht22.cc pin.cc servo.cc action.cc constraint.cc adconverter.cc lcddisplay.cc -o ghpi.o
+	g++ -std=c++0x -I/usr/local/inclu -I/usr/local/include/boost -L/usr/local/lib -lwiringPi -lrt -lpthread ghpi.cc operator.cc device.cc sensor.cc pump.cc actuator.cc analogsensor.cc ldr.cc hygrometer.cc dht22.cc pin.cc servo.cc action.cc constraint.cc adconverter.cc lcddisplay.cc -o ghpi.o
