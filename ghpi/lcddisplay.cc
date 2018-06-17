@@ -106,8 +106,8 @@ void ghpi::LCDDisplay::lcd_byte(int bits, int mode){
   int bits_high;
   int bits_low;
   // uses the two half byte writes to LCD
-  bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT ;
-  bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT ;
+  bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT_ON ;
+  bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT_ON ;
 
   // High bits
   wiringPiI2CReadReg8(fd, bits_high);
