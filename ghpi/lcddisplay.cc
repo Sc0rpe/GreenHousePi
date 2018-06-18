@@ -128,6 +128,8 @@ void ghpi::LCDDisplay::lcd_toggle_enable(int bits)   {
 }
 
 void ghpi::LCDDisplay::lcd_init(){
+    fd = wiringPiI2CSetup(I2C_ADDR);
+  
     // Initialise display
     lcd_byte(0x33, LCD_CMD); // Initialise
     lcd_byte(0x32, LCD_CMD); // Initialise

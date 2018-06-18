@@ -8,7 +8,18 @@
 #include <stdio.h>
 //#include "debug.h"
 
+
+
 namespace ghpi {
+  
+  enum LCDLINE {
+    LINE1 = 0x80,
+    LINE2 = 0xC0,
+    LINE3 = 0x94,
+    LINE4 = 0xD4
+  };
+  const int LCDLINES[] =  {LINE1, LINE2, LINE3, LINE4};
+  
   class LCDDisplay {
 	 public:
 		void lcd_init(void);

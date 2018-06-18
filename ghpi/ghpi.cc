@@ -14,7 +14,7 @@
 
 #ifdef DEBUG
 #define SERVO_PIN 1
-#define DHT_PIN 8
+#define DHT_PIN 6
 #define HYGRO_PIN 42
 #define PUMP_PIN 42
 #define LAMP_PIN 16
@@ -40,6 +40,14 @@ int main() {
       Pump pump;
       Actuator lamp("Lamp");
       Actuator fan("Fan");
+      LCDDisplay lcd;
+      
+      // Write welcome Screen to display
+      lcd.ClrLcd();
+      lcd.lcdLoc(ghpi::LCDLINES::LINE2);
+      lcd.writeLine("GreenHousePi V1.0");
+      
+      ghoperator.Set_LCDDisplay(&lcd);
       
       Pin dht_data_pin(DHT_PIN, PinMode::input, PinState::low);
       Pin hygro_pin(HYGRO_PIN, PinMode::output, PinState::high);

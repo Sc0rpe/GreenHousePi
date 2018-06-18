@@ -192,16 +192,17 @@ void ghpi::Operator::PrintConstraints() {
 
 
 void Operator::RefreshDisplay(const std::map<std::string, float> &values, LCDDisplay &disp) {
-  int num_lines = 0;
+  int num_line = 0;
   disp.ClrLcd();
   for (auto const &it: values) {
+    disp.lcdLoc(ghpi::LCDLINES[num_line]); 
     std::string line = it.first + " = " + std::to_string(it.second);
     disp.writeLine(line.c_str());
-    ++num_lines;
-    if (num_lines >= LCDDisplay::LINES) {
+    ++num_line;
+    if (num_line > LCDDisplay::LINES) {
       delay(2000);
       disp.ClrLcd();
-      num_lines = 0;
+      num_line = 0;
     }
   }
   #ifdef DEBUG
