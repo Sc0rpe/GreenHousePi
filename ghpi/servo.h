@@ -7,14 +7,19 @@
 #define GHPI_PWM_CLOCK 384
 #define  GHPI_PWM_RANGE 1000
 
+#define SERVO_OFF_POS 0
+#define SERVO_ON_POS 135
+
 namespace ghpi {
   
+  // Class for the Kuman KY72 Servo
   class Servo : public Actuator {
    public:
     void TurnOn() override;
     void TurnOff() override;
+    int get_angle();
     void Initialize();
-    Servo(int max_angle, int reaction_time);
+    Servo(int max_angle, int init_angle);
     ~Servo();
     
    private:
@@ -38,8 +43,6 @@ namespace ghpi {
     
     // Current angle of the motor
     int angle_;
-    
-    // Time to wait for setting the position in milliseconds
-    int reaction_time_;
+   
   };
 };
