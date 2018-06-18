@@ -36,16 +36,22 @@ int main() {
       Hygrometer hygro(&adcon, 7);
       LDR ldr1(&adcon, 0);
       LDR ldr2(&adcon, 1);
-      Servo servo(270, 3000);
+      Servo servo(270, 0);
       Pump pump;
       Actuator lamp("Lamp");
       Actuator fan("Fan");
       LCDDisplay lcd;
       
-      // Write welcome Screen to display
+      // Write welcome screen to display
       lcd.ClrLcd();
-      lcd.lcdLoc(ghpi::LCDLINES::LINE2);
+      lcd.lcdLoc(ghpi::LCDLINES::LINE1);
       lcd.writeLine("GreenHousePi V1.0");
+      lcd.lcdLoc(ghpi::LCDLINES::LINE2);
+      lcd.writeLine("Made by");
+      lcd.lcdLoc(ghpi::LCDLINES::LINE3);
+      lcd.writeLine(" Tobi          Pei ");
+      lcd.lcdLoc(ghpi::LCDLINES::LINE4);
+      lcd.writeLine(" Rico        Marcos");
       
       ghoperator.Set_LCDDisplay(&lcd);
       
