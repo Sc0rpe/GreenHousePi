@@ -71,7 +71,6 @@ Servo::Servo(int max_angle, int init_angle) : Actuator() {
   name_ = "Servo_" + std::to_string(get_count());
   max_angle_ = max_angle;
   angle_ = init_angle;
-  Initialize();
 }
 
 Servo::~Servo() {

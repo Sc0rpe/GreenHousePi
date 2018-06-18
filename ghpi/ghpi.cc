@@ -40,20 +40,26 @@ int main() {
       Pump pump;
       Actuator lamp("Lamp");
       Actuator fan("Fan");
-      LCDDisplay lcd;
+      LCDDisplay* lcd;
       
-      // Write welcome screen to display
-      lcd.ClrLcd();
-      lcd.lcdLoc(ghpi::LCDLINES::LINE1);
-      lcd.writeLine("GreenHousePi V1.0");
-      lcd.lcdLoc(ghpi::LCDLINES::LINE2);
-      lcd.writeLine("Made by");
-      lcd.lcdLoc(ghpi::LCDLINES::LINE3);
-      lcd.writeLine(" Tobi          Pei ");
-      lcd.lcdLoc(ghpi::LCDLINES::LINE4);
-      lcd.writeLine(" Rico        Marcos");
+      try {
+        // Write welcome screen to display
+        lcd = new LCDDisplay();
+        lcd->ClrLcd();
+        lcd->lcdLoc(ghpi::LCDLINE::LINE1);
+        lcd->writeLine("GreenHousePi V1.0");
+        lcd->lcdLoc(ghpi::LCDLINE::LINE2);
+        lcd->writeLine("Made by");
+        lcd->lcdLoc(ghpi::LCDLINE::LINE3);
+        lcd->writeLine(" Tobi          Pei ");
+        lcd->lcdLoc(ghpi::LCDLINE::LINE4);
+        lcd->writeLine(" Rico        Marcos");
+      }
+      catch (...) {
+        std::cout << "LCD has thrown an error" << std::endl;
+      }
       
-      ghoperator.Set_LCDDisplay(&lcd);
+      ghoperator.Set_LCDDisplay(lcd);
       
       Pin dht_data_pin(DHT_PIN, PinMode::input, PinState::low);
       Pin hygro_pin(HYGRO_PIN, PinMode::output, PinState::high);
@@ -80,7 +86,7 @@ int main() {
       ghoperator.RegisterDevice(&ldr2);
       ghoperator.RegisterDevice(&lamp);
       ghoperator.RegisterDevice(&fan);
-   
+
       // Creating Constraints
       Constraint temp("TempBelow60°C", EnvironmentValueStrings[EnvironmentValue::TEMPERATURE],
                         60.f, ConstraintConditionStrings[ConstraintCondition::BELOW]);
@@ -109,6 +115,8 @@ int main() {
       ghoperator.RegisterConstraint(lightlow, turn_on_light);
       ghoperator.RegisterConstraint(lighthigh, turn_off_light);
 
+      // Initialize Devices
+      servo.Initialize();
       
       ghoperator.PrintDevices();
       ghoperator.PrintConstraints();
