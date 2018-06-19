@@ -3,6 +3,8 @@
 //
 #pragma once
 #include <iostream>
+#include <cstdlib>
+#include <csignal>
 #include "operator.h"
 #include "dht22.h"
 #include "ldr.h"
@@ -24,10 +26,25 @@
 
 using namespace ghpi;
 
+bool STOP = false;
+
+// Set STOP to true, so we will break
+// out of the infinite loop and exit the main function
+// this will call the destructors of our object and the pins will
+// set to their default init state
+void exiting(int i) {
+	STOP = true;
+}
+
 int main() {
   
     wiringPiSetup();
     Operator ghoperator;
+    
+    signal(SIGABRT, exiting);
+    signal(SIGTERM, exiting);
+    signal(SIGTSTP, exiting);
+    signal(SIGINT, exiting);	
     
     #ifdef DEBUG
       // Instantiate some devices for testing
@@ -89,9 +106,9 @@ int main() {
 
       // Creating Constraints
       Constraint temp("TempBelow60°C", EnvironmentValueStrings[EnvironmentValue::TEMPERATURE],
-                        60.f, ConstraintConditionStrings[ConstraintCondition::BELOW]);
+                        18.f, ConstraintConditionStrings[ConstraintCondition::BELOW]);
       Constraint hum("HumBelow80%", EnvironmentValueStrings[EnvironmentValue::HUMIDITY],
-                        80.f, ConstraintConditionStrings[ConstraintCondition::BELOW]);
+                        80.f, ConstraintConditionStrings[ConstraintCondition::OVER]);
       Constraint lightlow("LightIntOver300", EnvironmentValueStrings[EnvironmentValue::LIGHT_INTENSITY],
                         300.f, ConstraintConditionStrings[ConstraintCondition::OVER]);
       Constraint lighthigh("LightIntUnder300", EnvironmentValueStrings[EnvironmentValue::LIGHT_INTENSITY],
@@ -102,16 +119,18 @@ int main() {
       Action close_roof("CloseRoof", ActionFn::AFN_OFF, NULL);
       Action turn_on_light("TurnOnLight", ActionFn::AFN_ON, NULL);
       Action turn_off_light("TurnOffLight", ActionFn::AFN_OFF, NULL);
+      Action turn_on_fan("TurnOnFan", ActionFn::AFN_ON, NULL);
       
       // Register Actions on devices
       servo.RegisterAction(open_roof);
       servo.RegisterAction(close_roof);
+      fan.RegisterAction(turn_on_fan);
       lamp.RegisterAction(turn_off_light);
       lamp.RegisterAction(turn_on_light);
       
       // Register Constraints
-      ghoperator.RegisterConstraint(temp, close_roof);
-      ghoperator.RegisterConstraint(hum, open_roof);
+      ghoperator.RegisterConstraint(temp, open_roof);
+      ghoperator.RegisterConstraint(hum, turn_on_fan);
       ghoperator.RegisterConstraint(lightlow, turn_on_light);
       ghoperator.RegisterConstraint(lighthigh, turn_off_light);
 
@@ -122,10 +141,15 @@ int main() {
       ghoperator.PrintConstraints();
       std::cout << "Start running operator" << std::endl;
       std::cout << "Running in intervalls of " << INTERVALL << " milliseconds" << std::endl;
-      while (true) {
+      
+      while (!STOP) {
         ghoperator.Run();
         delay(INTERVALL);
       }
+      
+      lcd->ClrLcd();
+      lcd->lcdLoc(ghpi::LCDLINE::LINE2);
+      lcd->writeLine("Goodbye...");
    
     #endif
     

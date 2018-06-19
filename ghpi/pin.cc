@@ -74,4 +74,6 @@ ghpi::Pin::Pin(int number, PinMode mode, PinState state, PinLayout layout) : Pin
 }
 
 ghpi::Pin::~Pin() {
+  // Set the pins to their default state on exiting the program!
+  Init();
 }

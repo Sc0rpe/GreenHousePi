@@ -41,7 +41,7 @@ int Servo::ConvertAngleToValue(int angle) {
 }
 
 void Servo::SetPosition(int angle) {  
-  const int stepdelay = 50;
+  const int stepdelay = 40;
   
   // Do not kill the servo with impossible angles
   if (angle > 135 || angle < -135) {
@@ -74,4 +74,5 @@ Servo::Servo(int max_angle, int init_angle) : Actuator() {
 }
 
 Servo::~Servo() {
+  SetPosition(SERVO_OFF_POS);
 }

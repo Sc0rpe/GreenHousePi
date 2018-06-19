@@ -6,5 +6,5 @@ namespace ghpi {
     SOIL_MOISTURE ,
     LIGHT_INTENSITY ,
   };
-  static const char * EnvironmentValueStrings[] = {"TEMP", "HUM", "SM", "LIGHT_INTENSITY"};
+  static const char * EnvironmentValueStrings[] = {"TEMP", "HUM", "SM", "LI"};
 }

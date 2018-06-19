@@ -8,7 +8,7 @@
 #define  GHPI_PWM_RANGE 1000
 
 #define SERVO_OFF_POS 0
-#define SERVO_ON_POS 135
+#define SERVO_ON_POS -130
 
 namespace ghpi {
   
