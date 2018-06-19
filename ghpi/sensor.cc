@@ -4,17 +4,26 @@
 #pragma once
 #include "sensor.h"
 
-std::map<std::string, void*>* ghpi::Sensor::Run(void* env_var) {
+std::map<std::string, float> ghpi::Sensor::Run(void* env_var) {
   values_.clear();
   values_ = get_values();
-  return &values_;
+  return values_;
 }
 
 void ghpi::Sensor::Print() {
   std::cout << "Sensor{";
-  device::Print();
+  Device::Print();
   for (auto &it: values_) {
-    std::cout << "," << it->first;
+    std::cout << "," << it.first;
   }
   std::cout << "}";
+}
+
+ghpi::Sensor::Sensor() : Device() {
+  name_ = "Sensor_" + std::to_string(get_count());
+  type_ = DeviceType::SENSOR;
+  mode_ = OperationMode::AUTONOMOUS;
+}
+
+ghpi::Sensor::~Sensor() {
 }

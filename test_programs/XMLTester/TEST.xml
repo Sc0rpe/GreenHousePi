@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DEVICE name="LIGHT_SENSOR">
+    <actionmapping name="light">
+        <constraint name="light_intensity">
+            <var name="limits" equal = "50" higher ="150" lower ="10"/>
+			<var name="limits" equal = "400" higher ="700" lower ="300"/>
+        </constraint>
+        <actionpin>7</actionpin>
+		<actionpin>2</actionpin>
+    </actionmapping>
+        
+    <actionmapping name="wavelength">
+        <constraint name="intensity">
+            <var name="limits" equal = "400" higher ="700" lower ="300"/>
+			<var name="limits" equal = "400" higher ="700" lower ="300"/>
+        </constraint>
+		<actionpin>4</actionpin>
+		<actionpin>5</actionpin>
+    </actionmapping>
+</DEVICE>

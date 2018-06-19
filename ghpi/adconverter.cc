@@ -57,6 +57,10 @@ int ghpi::ADConverter::ReadAnalogData(int channel, int clk_pin, int mosi_pin, in
 	return value;
 }
 
+std::string ghpi::ADConverter::get_name() {
+  return name_;
+}
+
 ghpi::ADConverter::ADConverter(int clk_pin, int mosi_pin, int miso_pin, int cs_pin,
                                 int min_val, int max_val) {
   clk_pin_ = clk_pin;
@@ -65,4 +69,7 @@ ghpi::ADConverter::ADConverter(int clk_pin, int mosi_pin, int miso_pin, int cs_p
   cs_pin_ = cs_pin;
   min_val_ = min_val;
   max_val_ = max_val;
+}
+
+ghpi::ADConverter::~ADConverter() {
 }

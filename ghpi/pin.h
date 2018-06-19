@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <string>
+#include <wiringPi.h>
 
 namespace ghpi {
 
@@ -26,11 +27,15 @@ namespace ghpi {
     class Pin { 
      public:
       // Functions
+      void Init();
       std::string get_name();
       int get_number();
       ghpi::PinMode get_mode();
       ghpi::PinState get_state();
       ghpi::PinLayout get_layout();
+      Pin(int number, PinMode mode, PinState state);
+      Pin(int number, PinMode mode, PinState state, PinLayout layout);
+      ~Pin();
       
      private:
       // Data Member

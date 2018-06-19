@@ -20,18 +20,19 @@ namespace ghpi {
     
     enum DeviceType {
       SENSOR = 0 ,
-      AKTUATOR ,
+      ACTUATOR ,
       RELAY
     };
-    static const char * DeviceTypeStrings[] = {"SENSOR", "AKTUATOR", "SWITCH", "RELAY"};
+    static const char * DeviceTypeStrings[] = {"SENSOR", "ACTUATOR", "SWITCH", "RELAY"};
     
     // This State describes whether the "switch pins"
     // must be high or low in order the device is turned on.
     enum OnState {
       OS_LOW = 0 ,
-      OS_HIGH = 1
+      OS_HIGH = 1,
+      OS_NONE = 2
     };
-    static const char * OnStateStrings[] = {"LOW", "HIGH"};
+    static const char * OnStateStrings[] = {"LOW", "HIGH", "NONE"};
     
     enum PinUsage {
       SWITCH = 0 ,
@@ -54,7 +55,7 @@ namespace ghpi {
     class Device { 
      public:  
       // Functions
-      virtual std::map<std::string, void*>* Run(void* env_var) = 0;
+      virtual std::map<std::string, float> Run(void* env_var) = 0;
       virtual void TurnOn();
       virtual void TurnOff();
       virtual void Toggle();
@@ -67,10 +68,12 @@ namespace ghpi {
       OperationMode get_mode();
       DeviceState get_state();
       DeviceType get_type();
+      bool operator==(const Device &r) const;
+      Device(std::string name);
       Device();
       ~Device();
       
-     private:
+     protected:
       // Data Members
       std::string name_;
       std::vector<Pin*> pins_;
@@ -79,6 +82,11 @@ namespace ghpi {
       OperationMode mode_;
       DeviceType type_;
       DeviceState state_;
+      int id_;
+      int get_count();
+      
+     private:
+      static int count;
     
     };
 }

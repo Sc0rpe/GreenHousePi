@@ -4,67 +4,79 @@
 #include "constraint.h"
 
 
-bool ghpi::Constraint::CheckForValue(float value) {
+bool ghpi::Constraint::CheckForValue(float value) const { 
   switch (condition_) {
     case ConstraintCondition::BELOW: {
-      if (value > value_)
+      if (value > value_) {
         return false;
+      }
       break;
     }
     case ConstraintCondition::OVER: {
-      if (value < value_)
+      if (value < value_) {
         return false;
+      }
       break;
     }
     case ConstraintCondition::EQUAL: {
-      if (value != value_)
+      if (value != value_) {
         return false;
+      }
       break;
     }
     default: {
       assert(false);
     }
   }
+
   return true;
 }
 
-std::string ghpi::Constraint::get_name() {
+std::string ghpi::Constraint::get_name() const {
   return name_;
 }
 
-std::string ghpi::Constraint::get_variable() {
+std::string ghpi::Constraint::get_variable() const {
   return variable_;
 }
 
-ConstraintCondition ghpi::Constraint::get_condition() {
+ghpi::ConstraintCondition ghpi::Constraint::get_condition() {
   return condition_;
 }
 
-ghpi::Constraint::Constraint(std::string name, std::string variable, ConstraintCondition condition) {
+ghpi::Constraint::Constraint(std::string name, std::string variable, float val) {
   name_ = name;
+  value_ = val;
   variable_ = variable;
+  condition_ = ConstraintCondition::BELOW;
+}
+
+ghpi::Constraint::Constraint(std::string name, std::string variable, float val, ConstraintCondition condition) : Constraint(name, variable, val) {
   condition_ = condition;
 }
 
-ghpi::Constraint::Constraint(std::string name, std::string variable, std::string condition) {
-  ConstraintCondition c;
-  
-  switch (condition) {
-    case "BELOW": {
-      c = ConstraintCondition::BELOW;
-      break;
-    }
-    case "OVER": {
-      c = ConstraintCondition::OVER;
-      break;
-    }
-    case "EQUAL": {
-      c = ConstraintCondition::EQUAL;
-      break;
-    }
-    default: {
-      assert(false);
-    }
-  }
-  Constraint(name, variable, c);
+ghpi::Constraint::Constraint(std::string name, std::string variable, float val, std::string condition) : Constraint(name, variable, val) {
+  if (condition == "BELOW")
+    condition_ = ConstraintCondition::BELOW;
+  else if (condition == "OVER")
+    condition_ = ConstraintCondition::OVER;
+  else if (condition == "EQUAL")
+    condition_ = ConstraintCondition::EQUAL;
+  else
+    assert(false);
+}
+
+ghpi::Constraint::~Constraint() {
+}
+
+bool ghpi::Constraint::operator==(const Constraint &c2) const {
+  if (this->get_name() == c2.get_name())
+    return true;
+  return false;
+}
+
+bool ghpi::Constraint::operator<(const Constraint &c2) const {
+  if (this->get_name() != c2.get_name())
+    return true;
+  return false;
 }

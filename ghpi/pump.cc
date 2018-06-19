@@ -2,12 +2,13 @@
 // 2018 Rico Schulz
 //
 #include "pump.h"
+using ghpi::Pump;
 
-void ghpi::Pump::ExecuteAction(Action action) {
+void Pump::ExecuteAction(Action action) {
   switch(action.get_action_fn()) {
     case ActionFn::AFN_ON: {
-      float* amount = (float*)Action.get_additional_data();
-      if (amount != null)
+      float* amount = (float*)action.get_additional_data();
+      if (amount != NULL)
         Water(*amount);
       break;
     }
@@ -20,7 +21,7 @@ void ghpi::Pump::ExecuteAction(Action action) {
       break;
     }
     case ActionFn::AFN_RUN: {
-      Run();
+      Run(NULL);
       break;
     }
     default: {
@@ -29,7 +30,7 @@ void ghpi::Pump::ExecuteAction(Action action) {
   }
 }
 
-void ghpi::Pump::Water(float amount) {
+void Pump::Water(float amount) {
   // Calculate time for watering
   float seconds = amount / ml_per_sec_;
   if (seconds <= 0) {
@@ -42,6 +43,12 @@ void ghpi::Pump::Water(float amount) {
 }
 
 void ghpi::Pump::Print() {
-
 }
 
+Pump::Pump() : Actuator() {
+  name_ = "Pump_" + std::to_string(get_count());
+  mode_ = OperationMode::AUTONOMOUS;
+}
+
+Pump::~Pump() {
+}
