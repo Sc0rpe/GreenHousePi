@@ -72,8 +72,10 @@ void ghpi::Operator::Run() {
   // Do actions from messages
   
   // Refresh display values
-  std::thread showvals(&ghpi::Operator::RefreshDisplay, std::ref(values), std::ref(*display_));
-  showvals.detach();
+  if (display_) {
+    std::thread showvals(&ghpi::Operator::RefreshDisplay, std::ref(values), std::ref(*display_));
+    showvals.detach();
+  }
 }
 
 void ghpi::Operator::RegisterConstraint(Constraint constraint, Action action) {
@@ -190,7 +192,6 @@ void ghpi::Operator::PrintConstraints() {
   }
 }
 
-
 void Operator::RefreshDisplay(const std::map<std::string, float> &values, LCDDisplay &disp) {
   int num_line = 0;
   disp.ClrLcd();
@@ -219,6 +220,7 @@ Operator::Operator() {
   shm_messages_ = shared_memory_object(create_only, ghpi::Operator::SHM_NAME, read_write);
   shm_messages_.truncate(MSG_QUEUE_SIZE);
   region_ = mapped_region(shm_messages_, read_write);
+  display_ = NULL;
 }
 
 Operator::~Operator() {
