@@ -55,8 +55,8 @@ void ghpi::Operator::Run() {
       for (auto const &a_it: actions) {
         std::vector<Action> d_actions = act->GetActionsByName(a_it.get_name()); // Retrieve actions the current device can execute
         for (auto const &da_it: d_actions) {
-          act->ExecuteAction(a_it); // If they match we have the right device -> execute!
-          std::cout << "[" << act->get_name() << "]" << " executing action: " << a_it.get_name() << std::endl;
+          act->ExecuteAction(da_it); // If they match we have the right device -> execute!
+          std::cout << "[" << act->get_name() << "]" << " executing action: " << da_it.get_name() << std::endl;
         }     
       }
   }
@@ -74,6 +74,18 @@ void ghpi::Operator::Run() {
     std::cout << "[Operator] Executing actions from shared memory" << std::endl;
   #endif
   // Do actions from messages
+  for (auto d_it: devices_) { 
+    // Check all devices for being an actuator
+    if (ghpi::Actuator *act = dynamic_cast<ghpi::Actuator*>(d_it))
+      // Go through all actions to be executed
+      for (auto const &a_it: actions) {
+        std::vector<Action> d_actions = act->GetActionsByName(a_it.get_name()); // Retrieve actions the current device can execute
+        for (auto const &da_it: d_actions) {
+          act->ExecuteAction(da_it); // If they match we have the right device -> execute!
+          std::cout << "[" << act->get_name() << "]" << " executing action: " << da_it.get_name() << std::endl;
+        }     
+      }
+  }
   
   // Refresh display values
   if (display_) {
