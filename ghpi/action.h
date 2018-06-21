@@ -3,6 +3,7 @@
 //
 #pragma  once
 #include <iostream>
+#include <cstring>
 
 namespace ghpi {
   
@@ -17,7 +18,7 @@ namespace ghpi {
   class Action {
    public:
     // Functions
-    std::string get_name() const;
+    const char* get_name() const;
     ActionFn get_action_fn() const;
     void* get_additional_data();
     void Print();
@@ -29,7 +30,7 @@ namespace ghpi {
     //    name: Arbitrary name for the action
     //    action_fn: Action to be executed out of the ActionFn enum
     //    add_data: Additional action data. Null for the most. ml to water for pump
-    Action(std::string name, ActionFn action_fn, void* add_data);
+    Action(const char* name, ActionFn action_fn, void* add_data);
     
     bool operator==(Action const &a2) const;
     
@@ -39,7 +40,7 @@ namespace ghpi {
     // An arbitrary name for the action.
     // Name should match an Action in the list of 
     // actions of an actuator so it can be executed by it
-    std::string name_;
+    char name_[128];
     
     // Action FNs can be out of {OFF, ON, TOGGLE, RUN}.
     // These are the actions that can be executet by each device

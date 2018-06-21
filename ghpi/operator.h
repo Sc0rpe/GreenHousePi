@@ -11,6 +11,8 @@
 #include <unordered_map>
 #include <boost/interprocess/shared_memory_object.hpp>
 #include <boost/interprocess/mapped_region.hpp>
+#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
 #include "environmentvalue.h"
 #include "device.h"
 #include "action.h"
@@ -19,7 +21,7 @@
 #include "lcddisplay.h"
 #include "debug.h"
 
-#define MSG_QUEUE_SIZE 1000
+#define MSG_QUEUE_SIZE 300
 
 using namespace boost::interprocess;
 
@@ -66,19 +68,28 @@ namespace ghpi {
       Operator();
       ~Operator();
       
+      static constexpr const char* const SHM_NAME = "GHPI_Messages";
+      
+      struct shm_remove {
+        shm_remove() { shared_memory_object::remove(SHM_NAME); }
+        ~shm_remove(){ shared_memory_object::remove(SHM_NAME); }
+      } remover_;
+      
       struct MSGQueue {
         Action actions_[256];
-        int index_;
-        MSGQueue() { index_ = 0; }
+        int count;
+        MSGQueue() { count = 0; }
         
-        Action Get(int i) {
-          --index_;
-          return actions_[i];
+        interprocess_mutex mutex;
+        
+        Action Pop() {
+          --count;
+          return actions_[count];
         }
         
         void Put(Action act) {
-          actions_[index_] = act;
-          ++index_;
+          actions_[count] = act;
+          ++count;
         }
       };
     
@@ -108,14 +119,7 @@ namespace ghpi {
       // Actions are expectet to help meeting the constraint when executet
       //std::map<Constraint, Action> constraints_;
       std::unordered_map<Constraint, std::vector<Action>> constraints_;
-      
-      static constexpr const char* const SHM_NAME = "GHPI_Messages";
-      
-      struct shm_remove {
-        shm_remove() { shared_memory_object::remove(SHM_NAME); }
-        ~shm_remove(){ shared_memory_object::remove(SHM_NAME); }
-      } remover_;
-    
+ 
       
       boost::interprocess::shared_memory_object shm_messages_;
       boost::interprocess::mapped_region region_;

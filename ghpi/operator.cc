@@ -65,6 +65,10 @@ void ghpi::Operator::Run() {
     std::cout << "[Operator] Reading from shared memory" << std::endl;
   #endif
   // Read Messages from shared memory 
+  actions = ReadMessagesFromQueue();
+  #ifdef DEBUG
+    std::cout << "[Operator] " << actions.size() << " to be executed from shared memory" << std::endl;
+  #endif
   
   #ifdef DEBUG
     std::cout << "[Operator] Executing actions from shared memory" << std::endl;
@@ -169,8 +173,28 @@ bool ghpi::Operator::CheckForDuplicateDevice(ghpi::Device* device) {
 }
 
 std::vector<ghpi::Action> ghpi::Operator::ReadMessagesFromQueue() {
-  // Read Messages from the Queue
+  std::vector<ghpi::Action> actions;
   
+  //Get the address of the mapped region
+  void * addr       = region_.get_address();
+  //Construct the shared structure in memory
+  MSGQueue * data = static_cast<ghpi::Operator::MSGQueue*>(addr);
+  if (!data) {
+    std::cout << " Error while reading shared memory" << std::endl;
+    return actions;
+  }
+  
+  { // Code block for scoped_lock. Mutex will automatically unlock after block.
+    // even if an exception occurs
+    scoped_lock<interprocess_mutex> lock(data->mutex);
+    
+    while (data->count > 0) {
+      actions.push_back(data->Pop());
+      std::cout << " Read action from shm" << std::endl;
+    }
+  }
+  
+  return actions;
 }  
 
 void ghpi::Operator::PrintDevices() {
@@ -217,8 +241,11 @@ void Operator::Set_LCDDisplay(LCDDisplay* display) {
   
 Operator::Operator() {
   // Create shared Memory Segment for message queue
+  #ifdef DEBUG
+    std::cout << sizeof(ghpi::Operator::MSGQueue) << std::endl;
+  #endif
   shm_messages_ = shared_memory_object(create_only, ghpi::Operator::SHM_NAME, read_write);
-  shm_messages_.truncate(MSG_QUEUE_SIZE);
+  shm_messages_.truncate(sizeof(ghpi::Operator::MSGQueue));
   region_ = mapped_region(shm_messages_, read_write);
   display_ = NULL;
 }

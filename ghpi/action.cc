@@ -3,7 +3,7 @@
 //
 #include "action.h"
 
-std::string ghpi::Action::get_name() const {
+const char* ghpi::Action::get_name() const {
   return name_;
 }
 
@@ -19,8 +19,8 @@ void ghpi::Action::Print() {
   std::cout << "Action{" << name_ << "," << ActionFnStrings[action_fn_] << "}" ;
 }
 
-ghpi::Action::Action(std::string name, ActionFn action_fn, void* add_data) {
-  name_ = name;
+ghpi::Action::Action(const char* name, ActionFn action_fn, void* add_data) {
+  strcpy(name_, name);
   action_fn_ = action_fn;
   additional_data_ = add_data;
 }
@@ -30,7 +30,7 @@ ghpi::Action::~Action() {
 }
 
 bool ghpi::Action::operator==(Action const &a2) const {
-  if (get_name() == a2.get_name())
+  if (strcmp(name_, a2.get_name()) == 0)
     return true;
   return false;
 }
