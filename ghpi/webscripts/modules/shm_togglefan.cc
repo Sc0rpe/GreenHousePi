@@ -26,7 +26,7 @@ int main() {
   //Construct the shared structure in memory
   ghpi::Operator::MSGQueue * data = static_cast<ghpi::Operator::MSGQueue*>(addr);
   
-  ghpi::Action toggle_fan("TurnOnFan", ghpi::ActionFn::AFN_TOGGLE, NULL);
+  ghpi::Action toggle_fan("ToggleFan", ghpi::ActionFn::AFN_TOGGLE, NULL);
   
   { // Code block for scoped_lock. Mutex will automatically unlock after block.
     // even if an exception occurs
