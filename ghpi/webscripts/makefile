@@ -1,4 +1,4 @@
-all:  togglefan togglelamp toggleservo
+all:  togglefan togglelamp toggleservo operateservo operatelamp operatefan
 togglefan:
 	g++ -std=c++0x -I/usr/local/inclu -I../ -I/usr/local/include/boost -L/usr/local/lib -lwiringPi -lrt modules/shm_togglefan.cc ../action.cc -o togglefan
 togglelamp:
