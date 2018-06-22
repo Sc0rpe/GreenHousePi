@@ -22,14 +22,45 @@ Desired features:
     and enable the I2C Interface under advanced options
 5. Dowload the ghpi-library, therefore run 
     `git clone https://github.com/Sc0rpe/GreenHousePi`
-6. Go into the folder ghpi and run
+6. Go into the folder `ghpi` and run
     `make main`
-    Output will be a file ghpi.o
+    Output will be a file `ghpi.o`
 7. You can run it with
     `sudo ./ghpi.o`
 8. If you want it to start after boot automaticaly add
     `./path/to/ghpi.o`
     to the end of the file /etc/rc.local
+9. Also you can copy the binary into the folder `/usr/local/bin` so you can run it from everywhere by typing `sudo ghpi.o`
+
+# Setting up the Webinterface
+1. Run 
+    ```
+    sudo apt-get update
+    sudo apt-get upgrade
+    ```
+2. Install the `lighttpd` Webserver
+    ```
+    sudo apt-get install lighttpd
+    ```
+3. Install `php7.0`
+    ```
+    sudo apt-get install php7.0
+    ```
+4. Activate the FastCGI Modul for php and restart the server
+    ```
+    sudo lighty-enable-mod fastcgi
+    sudo lighty-enable-mod fastcgi-php
+    sudo service lighttpd force-reload
+    ```
+5. Add the user `www-data` to the sudoers so it can run the software modules.
+    Therefore run `sudo visudo` and add the line `www-data ALL=(ALL) NOPASSWD: ALL` to it.
+    Exit with `[CTRL] + [X]`, confirm with `[Y]` and press `[ENTER]`.
+6. Go into the folder `GreenHousePi/ghpi/webscripts` and run:
+    ```
+    make
+    sudo make install
+    ```
+    This will compile the modules and copy them, the html and php files into the root directory of the webserver. By default this is `/var/www/html` for lighttpd. If this is different for you, you have to copy them manually or change the concerning lines in the makefile.
 
 # Adding your own Sensor
 1. Create a new class and inherit from `ghpi::Sensor`
