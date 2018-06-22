@@ -26,19 +26,16 @@ int main() {
   //Construct the shared structure in memory
   ghpi::Operator::MSGQueue * data = static_cast<ghpi::Operator::MSGQueue*>(addr);
   
-  ghpi::Action toggle_lamp("ToggleLamp", ghpi::ActionFn::AFN_TOGGLE, NULL, "Lamp", true);
-	ghpi::Action op_manu_lamp("OperateManually", ghpi::ActionFn::AFN_OP_MANU, NULL, "Lamp", true);
-  
+  ghpi::Action op_auto_servo("OperateAutonomous", ghpi::ActionFn::AFN_OP_AUTO, NULL, "Servo_5", true);
   { // Code block for scoped_lock. Mutex will automatically unlock after block.
     // even if an exception occurs
     scoped_lock<interprocess_mutex> lock(data->mutex);
     
     // Put the action in the shared memory object
-    data->Put(toggle_lamp);
-		data->Put(op_manu_lamp);
+		data->Put(op_auto_servo);
   }
   
-  std::cout << "Added Action " << toggle_lamp.get_name() << " to queue" << std::endl;
+  std::cout << "Added Action " << op_auto_servo.get_name() << " to queue" << std::endl;
   
   return 0;
 }

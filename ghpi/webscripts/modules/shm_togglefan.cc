@@ -26,14 +26,15 @@ int main() {
   //Construct the shared structure in memory
   ghpi::Operator::MSGQueue * data = static_cast<ghpi::Operator::MSGQueue*>(addr);
   
-  ghpi::Action toggle_fan("ToggleFan", ghpi::ActionFn::AFN_TOGGLE, NULL);
-  
+  ghpi::Action toggle_fan("ToggleFan", ghpi::ActionFn::AFN_TOGGLE, NULL, "Fan", true);
+  ghpi::Action op_manu_fan("OperateManually", ghpi::ActionFn::AFN_OP_MANU, NULL, "Fan", true);
   { // Code block for scoped_lock. Mutex will automatically unlock after block.
     // even if an exception occurs
     scoped_lock<interprocess_mutex> lock(data->mutex);
     
     // Put the action in the shared memory object
     data->Put(toggle_fan);
+		data->Put(op_manu_fan);
   }
   
   std::cout << "Added Action " << toggle_fan.get_name() << " to queue" << std::endl;

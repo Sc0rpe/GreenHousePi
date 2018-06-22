@@ -20,6 +20,7 @@ void Device::TurnOn() {
   for (auto &pin : switch_pins) {
     digitalWrite(pin->get_number(), (int)pin_on_states_.find(pin)->second);
   }
+	state_ = ghpi::DeviceState::ON;
 }
 
 void Device::TurnOff() {
@@ -30,6 +31,7 @@ void Device::TurnOff() {
     // if the state was 1 we will get 2 wich will become 0 mod 2
     digitalWrite(pin->get_number(), ((int)pin_on_states_.find(pin)->second + 1) % 2);
   }
+	state_ = ghpi::DeviceState::OFF;
 }
 
 void Device::Toggle() {

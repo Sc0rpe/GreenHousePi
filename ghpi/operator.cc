@@ -74,6 +74,35 @@ void ghpi::Operator::Run() {
     std::cout << "[Operator] Executing actions from shared memory" << std::endl;
   #endif
   // Do actions from messages
+  ExecuteActions(actions);
+  
+  // Refresh display values
+  if (display_) {
+    std::thread showvals(&ghpi::Operator::RefreshDisplay, std::ref(values), std::ref(*display_));
+    showvals.detach();
+  }
+}
+
+void ghpi::Operator::ExecuteActions(std::vector<Action> &actions) {
+	std::vector<ghpi::Action> temp;
+	for (auto const &a_it: actions) {
+		if (strcmp(a_it.get_target(), "\0")) {
+			ghpi::Actuator *act = dynamic_cast<ghpi::Actuator*>(GetDeviceByName(a_it.get_target()));
+			act->ExecuteAction(a_it);
+			temp.push_back(a_it);
+		}
+	}
+
+	for (auto const &it: temp) {
+		int i = 0;
+		for (auto const &at: actions) {
+			if (actions.at(i) == it)
+				break;	
+			++i;
+		}
+		actions.erase(actions.begin() + i);
+	}
+	
   for (auto d_it: devices_) { 
     // Check all devices for being an actuator
     if (ghpi::Actuator *act = dynamic_cast<ghpi::Actuator*>(d_it))
@@ -86,12 +115,7 @@ void ghpi::Operator::Run() {
         }     
       }
   }
-  
-  // Refresh display values
-  if (display_) {
-    std::thread showvals(&ghpi::Operator::RefreshDisplay, std::ref(values), std::ref(*display_));
-    showvals.detach();
-  }
+	
 }
 
 void ghpi::Operator::RegisterConstraint(Constraint constraint, Action action) {
@@ -131,7 +155,7 @@ std::vector<ghpi::Action> ghpi::Operator::CheckConstraints(std::map<std::string,
         break;
       }
     }
-  }  
+  }
   return actions;
 }
 

@@ -15,11 +15,13 @@ void Servo::Initialize() {
 void Servo::TurnOn() {
   // Set Servo Position to max angle
   SetPosition(SERVO_ON_POS);
+	state_ = ghpi::DeviceState::ON;
 }
 
 void Servo::TurnOff() {
   // Set Servo Position to min angle
   SetPosition(SERVO_OFF_POS);
+	state_ = ghpi::DeviceState::OFF;
 }
 
 void Servo::SetUpPWM() {
@@ -75,4 +77,5 @@ Servo::Servo(int max_angle, int init_angle) : Actuator() {
 
 Servo::~Servo() {
   SetPosition(SERVO_OFF_POS);
+	delay(200);
 }

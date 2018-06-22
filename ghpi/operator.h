@@ -59,6 +59,7 @@ namespace ghpi {
       void RegisterConstraint(Constraint constraint, Action action);
       std::vector<Action> CheckConstraints(std::map<std::string, float> values);
       void Run();
+			void ExecuteActions(std::vector<Action> &actions);
       static void RefreshDisplay(const std::map<std::string, float> &values, LCDDisplay &disp);
       void PrintDevices();
       void PrintValues();

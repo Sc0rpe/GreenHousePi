@@ -4,27 +4,37 @@
 #include "actuator.h"
 
 void ghpi::Actuator::ExecuteAction(Action action) {
-  switch(action.get_action_fn()) {
-    case ActionFn::AFN_ON: {
-      TurnOn();
-      break;
-    }
-    case ActionFn::AFN_OFF: {
-      TurnOff();
-      break;
-    }
-    case ActionFn::AFN_TOGGLE: {
-      Toggle();
-      break;
-    }
-    case ActionFn::AFN_RUN: {
-      Run(NULL);
-      break;
-    }
-    default: {
-      assert(false);
-    }
-  }
+	if (action.get_manually() || mode_ == ghpi::OperationMode::AUTONOMOUS) {
+		switch(action.get_action_fn()) {
+			case ActionFn::AFN_ON: {
+				TurnOn();
+				break;
+			}
+			case ActionFn::AFN_OFF: {
+				TurnOff();
+				break;
+			}
+			case ActionFn::AFN_TOGGLE: {
+				Toggle();
+				break;
+			}
+			case ActionFn::AFN_RUN: {
+				Run(NULL);
+				break;
+			}
+			case ActionFn::AFN_OP_MANU: {
+				mode_ = OperationMode::MANUALLY;
+				break;
+			}
+			case ActionFn::AFN_OP_AUTO: {
+				mode_ = OperationMode::AUTONOMOUS;
+				break;
+			}
+			default: {
+				assert(false);
+			}
+		}
+	}
 }
 
 // Overriding Device::Run(void*)

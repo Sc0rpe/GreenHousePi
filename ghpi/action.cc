@@ -15,14 +15,36 @@ void* ghpi::Action::get_additional_data() {
   return additional_data_;
 }
 
+const char* ghpi::Action::get_target() const {
+	return target_;
+}
+
+void ghpi::Action::set_manually(bool man) {
+	manually_ = man;
+}
+
+bool ghpi::Action::get_manually() {
+	return manually_;
+}
+
 void ghpi::Action::Print() {
   std::cout << "Action{" << name_ << "," << ActionFnStrings[action_fn_] << "}" ;
+}
+
+ghpi::Action::Action(const char* name, ActionFn action_fn, void* add_data, const char* target, bool manually) {
+  strcpy(name_, name);
+  action_fn_ = action_fn;
+  additional_data_ = add_data;
+	stpcpy(target_, target);
+	manually_ = manually;
 }
 
 ghpi::Action::Action(const char* name, ActionFn action_fn, void* add_data) {
   strcpy(name_, name);
   action_fn_ = action_fn;
   additional_data_ = add_data;
+	target_[0] = '\0';
+	manually_ = false;
 }
 
 ghpi::Action::~Action() {

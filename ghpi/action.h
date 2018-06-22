@@ -11,9 +11,11 @@ namespace ghpi {
     AFN_OFF = 0 ,
     AFN_ON ,
     AFN_TOGGLE ,
-    AFN_RUN
+    AFN_RUN,
+		AFN_OP_MANU,
+		AFN_OP_AUTO
   };
-  static const char * ActionFnStrings[] = {"OFF", "ON", "TOGGLE", "RUN"};
+  static const char * ActionFnStrings[] = {"OFF", "ON", "TOGGLE", "RUN", "OP_MANU", "OP_AUTO"};
   
   class Action {
    public:
@@ -21,6 +23,9 @@ namespace ghpi {
     const char* get_name() const;
     ActionFn get_action_fn() const;
     void* get_additional_data();
+		void set_manually(bool man);
+		bool get_manually();
+		const char* get_target() const;
     void Print();
     Action();
     ~Action();
@@ -31,11 +36,19 @@ namespace ghpi {
     //    action_fn: Action to be executed out of the ActionFn enum
     //    add_data: Additional action data. Null for the most. ml to water for pump
     Action(const char* name, ActionFn action_fn, void* add_data);
-    
+    Action(const char* name, ActionFn action_fn, void* add_data, const char* target, bool manually);
+		
+		
     bool operator==(Action const &a2) const;
     
    private:
     // Data Members
+		
+		char target_[64];
+		
+		// Was this action created by the operator autonomous or by 
+		// some user in the webinterface manually
+		bool manually_;
     
     // An arbitrary name for the action.
     // Name should match an Action in the list of 

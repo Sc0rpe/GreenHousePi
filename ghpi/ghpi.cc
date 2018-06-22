@@ -123,6 +123,8 @@ int main() {
       Action toggle_servo("ToggleServo", ActionFn::AFN_TOGGLE, NULL);
       Action toggle_lamp("ToggleLamp", ActionFn::AFN_TOGGLE, NULL);
       Action toggle_fan("ToggleFan", ActionFn::AFN_TOGGLE, NULL);
+			Action op_man("OperateManually", ActionFn::AFN_OP_MANU, NULL);
+			Action op_auto("OperateAutonomous", ActionFn::AFN_OP_AUTO, NULL);
       
       // Register Actions on devices
       servo.RegisterAction(open_roof);
@@ -133,6 +135,12 @@ int main() {
       lamp.RegisterAction(turn_off_light);
       lamp.RegisterAction(turn_on_light);
       lamp.RegisterAction(toggle_lamp);
+			servo.RegisterAction(op_man);
+			lamp.RegisterAction(op_man);
+			fan.RegisterAction(op_man);
+			servo.RegisterAction(op_auto);
+			lamp.RegisterAction(op_auto);
+			fan.RegisterAction(op_auto);
       
       // Register Constraints
       ghoperator.RegisterConstraint(temp, open_roof);
