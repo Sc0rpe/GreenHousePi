@@ -23,6 +23,7 @@ install:
 	cp operatelamp /var/www/html/modules
 	cp operatefan /var/www/html/modules
 	cp index.html /var/www/html
+	cp poweroff.php /var/www/html
 	cp togglefan.php /var/www/html
 	cp toggleservo.php /var/www/html
 	cp togglelamp.php /var/www/html
