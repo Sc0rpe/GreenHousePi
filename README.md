@@ -21,15 +21,17 @@ Desired features:
     and enable the I2C Interface under advanced options
 5. Dowload the ghpi-library, therefore run 
     `git clone https://github.com/Sc0rpe/GreenHousePi`
-6. Go into the folder `ghpi` and run
+6. If you connected your devices on different pins than we did change the defines in the file
+    `ghpi.cc` 
+7. Go into the folder `ghpi` and run
     `make main`
     Output will be a file `ghpi.o`
-7. You can run it with
+8. You can run it with
     `sudo ./ghpi.o`
-8. If you want it to start after boot automaticaly add
+9. If you want it to start after boot automaticaly add
     `./path/to/ghpi.o`
     to the end of the file /etc/rc.local
-9. Also you can copy the binary into the folder `/usr/local/bin` so you can run it from everywhere by typing `sudo ghpi.o`
+10. Also you can copy the binary into the folder `/usr/local/bin` so you can run it from everywhere by typing `sudo ghpi.o`
 
 # Setting up the Webinterface
 1. Run 
