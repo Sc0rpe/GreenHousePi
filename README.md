@@ -62,11 +62,11 @@ Desired features:
     This will compile the modules and copy them, the html and php files into the root directory of the webserver. By default this is `/var/www/html` for lighttpd. If this is different for you, you have to copy them manually or change the concerning lines in the makefile.
 
 # Class Layout
-![UML Class Diagram](Documentation/UML/GreenHousePi-small Class Diagram.png)
+![UML Class Diagram](Documentation/UML/GreenHousePi-small ClassDiagram.png)
 
-#Cycle Schedule
+# Cycle Schedule
 This is what a cycle is doing. A cycle is one call of the Operate::Run function.
-![UML Class Diagram](Documentation/UML/GreenHousePi-Cycle Schedule.png)
+![Cycle schedule](Documentation/UML/GreenHousePi-CycleSchedule.png)
 
     
 # Adding your own Sensor
