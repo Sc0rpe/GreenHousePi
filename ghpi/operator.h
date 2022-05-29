@@ -13,6 +13,7 @@
 #include <boost/interprocess/mapped_region.hpp>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
+#include <boost/log/trivial.hpp>
 #include "environmentvalue.h"
 #include "device.h"
 #include "action.h"
@@ -43,7 +44,7 @@ namespace std {
         return (hash<string>()(c.get_name()));
       }
     };  
-}
+} 
 
 namespace ghpi {
   
@@ -64,7 +65,6 @@ namespace ghpi {
       void PrintDevices();
       void PrintValues();
       void PrintConstraints();
-      void Clear();
       void Set_LCDDisplay(LCDDisplay* display);
       Operator();
       ~Operator();
@@ -112,6 +112,7 @@ namespace ghpi {
       
       // Data Members
       
+
       LCDDisplay* display_;
       std::vector<Device*> devices_;
       std::map<std::string, float> values_;

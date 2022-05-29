@@ -4,6 +4,8 @@
 #include "actuator.h"
 
 void ghpi::Actuator::ExecuteAction(Action action) {
+  // execute the action if the device is operated autonomous or
+  // if the action was created manually
 	if (action.get_manually() || mode_ == ghpi::OperationMode::AUTONOMOUS) {
 		switch(action.get_action_fn()) {
 			case ActionFn::AFN_ON: {
@@ -46,6 +48,8 @@ std::map<std::string, float> ghpi::Actuator::Run(void* env_var) {
     // Execute actions
   //  ExecuteAction(it);
   //}
+  std::map<std::string, float> r;
+  return r;
 }
 
 void ghpi::Actuator::RegisterAction(Action action) {
@@ -60,6 +64,14 @@ std::vector<ghpi::Action> ghpi::Actuator::GetActionsByName(std::string name) con
       actions.push_back(it);
   }
   return actions;
+}
+
+bool ghpi::Actuator::CanExecute(std::string action_name) const {
+  for (auto it : actions_) {
+    if (it.get_name() == action_name)
+      return true;
+  }
+  return false;
 }
 
 void ghpi::Actuator::Print() {

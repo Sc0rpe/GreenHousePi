@@ -7,18 +7,18 @@
 
 namespace ghpi {
 
-    enum PinLayout {
+    enum class PinLayout : short {
       wiringPi = 0 ,
       hardware ,
       bcm
     };
     
-    enum PinState {
+    enum class PinState : short {
       high = 0 ,
       low
     };
     
-    enum PinMode {
+    enum class PinMode : short {
       output = 0 ,
       input ,
       pwmoutput

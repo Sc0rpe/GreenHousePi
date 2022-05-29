@@ -10,6 +10,7 @@ namespace ghpi {
      public:
       // Functions
       int GetValueFromChannel(int channel);
+      float GetPercentValueFromChannel(int channel);
       std::string get_name();
       ADConverter(int clk_pin, int mosi_pin, int miso_pin, int cs_pin,
                     int min_val, int max_val);

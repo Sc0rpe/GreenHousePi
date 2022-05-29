@@ -3,11 +3,11 @@
 //
 #pragma  once
 #include <iostream>
-#include <cstring>
+#include <string.h>
 
 namespace ghpi {
   
-  enum ActionFn {
+  enum class ActionFn : int {
     AFN_OFF = 0 ,
     AFN_ON ,
     AFN_TOGGLE ,
@@ -25,18 +25,20 @@ namespace ghpi {
     void* get_additional_data();
 		void set_manually(bool man);
 		bool get_manually();
+    bool has_target() const;
 		const char* get_target() const;
     void Print();
-    Action();
-    ~Action();
     
     // Constructor
     //  ARGS:
     //    name: Arbitrary name for the action
     //    action_fn: Action to be executed out of the ActionFn enum
     //    add_data: Additional action data. Null for the most. ml to water for pump
+    Action();
     Action(const char* name, ActionFn action_fn, void* add_data);
     Action(const char* name, ActionFn action_fn, void* add_data, const char* target, bool manually);
+
+    ~Action();
 		
 		
     bool operator==(Action const &a2) const;

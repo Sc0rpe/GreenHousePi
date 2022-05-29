@@ -11,14 +11,14 @@
 
 namespace ghpi {
 
-    enum OperationMode {
+    enum class OperationMode : int {
       MANUALLY = 0 , 
       AUTONOMOUS = 1
     };
     static const char * OperationModeStrings[] = {"MANUALLY", "AUTONOMOUS"};
     
     
-    enum DeviceType {
+    enum class DeviceType : int {
       SENSOR = 0 ,
       ACTUATOR ,
       RELAY
@@ -27,14 +27,14 @@ namespace ghpi {
     
     // This State describes whether the "switch pins"
     // must be high or low in order the device is turned on.
-    enum OnState {
+    enum class OnState : int {
       OS_LOW = 0 ,
       OS_HIGH = 1,
       OS_NONE = 2
     };
     static const char * OnStateStrings[] = {"LOW", "HIGH", "NONE"};
     
-    enum PinUsage {
+    enum class PinUsage : int {
       SWITCH = 0 ,
       BI_DATA ,
       MOSI ,
@@ -45,7 +45,7 @@ namespace ghpi {
     };
     static const char * PinUsageStrings[] = {"SWITCH", "BI_DATA", "MOSI", "MISO", "CLCK", "CS", "PWM"};
     
-    enum DeviceState {
+    enum class DeviceState : int {
       OFF = 0 ,
       ON = 1
     };

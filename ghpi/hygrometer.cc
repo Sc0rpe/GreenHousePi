@@ -20,14 +20,18 @@ std::map<std::string, float> ghpi::Hygrometer::get_values() {
   return values;
 }
 
-int ghpi::Hygrometer::ReadSoilMoisture(int channel) {
-  int value = 0;
-  // First turn on the sensor. This shall turn on the correct channel of the relay.
+float ghpi::Hygrometer::ReadSoilMoisture(int channel) {
+  float value = 0;
+  // First turn on the sensor. This should turn on the correct channel of the relay.
   TurnOn();
   
   // Read value from the A/D - converter channel
-  for (int i=0; i < HYG_MEASUREMENTS; ++i)
-    value += adconverter_->GetValueFromChannel(channel);
+  for (int i = 0; i < HYG_MEASUREMENTS; ++i) {
+    if (is_transform_linear)
+      value += TransformLinear(adconverter_->GetValueFromChannel(channel));
+    else
+      value += adconverter_->GetValueFromChannel(channel);
+  }
   
   value = value / HYG_MEASUREMENTS;
   
@@ -37,10 +41,17 @@ int ghpi::Hygrometer::ReadSoilMoisture(int channel) {
   return value;
 }
 
+float ghpi::Hygrometer::TransformLinear(float value) {
+  float M = (max_.Y - min_.Y) / (max_.X - min_.X);
+  float N = max_.Y - M * max_.X;
+  return (M * value + N);
+}
+
 ghpi::Hygrometer::Hygrometer(ADConverter *adconverter, int channel) : AnalogSensor(adconverter, channel) {
   name_ = "Hygrometer_" + std::to_string(get_count());
   mode_ = OperationMode::AUTONOMOUS;
   channel_ = channel;
+  is_transform_linear = false;
 }
 
 ghpi::Hygrometer::~Hygrometer() {

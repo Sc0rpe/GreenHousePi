@@ -24,43 +24,6 @@
 const int ghpi::LCDDisplay::LINES = 4;
 
 
-void ghpi::LCDDisplay::startTest(void)
-{
-
-    if (wiringPiSetup () == -1)
-      exit (1);
-
-    fd = wiringPiI2CSetup(I2C_ADDR);
-
-    lcd_init(); // setup LCD
-
-    while(1){
-        lcdLoc(LINE1);
-        writeLine("Using wiringPi");
-        lcdLoc(LINE2);
-        writeLine("and NANO editor.");
-
-        delay(2000);
-        ClrLcd();
-        lcdLoc(LINE1);
-        writeLine("I2C Programmed (TM, C, R)");
-        lcdLoc(LINE2);
-        writeLine("in C ... not Python.");
-        delay(1000);
-        lcdLoc(LINE1);
-        writeLine("########################################");
-        delay(1000);
-        lcdLoc(LINE4);
-        writeLine("**********");
-        delay(1000);
-        lcdLoc(LINE2);
-        writeLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-        delay(3000);
-        ClrLcd();
-    }
-}
-
-
 // float to string
 void ghpi::LCDDisplay::typeFloat(float f){
 	char buffer[20];
@@ -90,13 +53,20 @@ void ghpi::LCDDisplay::lcdLoc(int line){
 
 // out char to LCD at current position
 void ghpi::LCDDisplay::typeChar(char val){
-
     lcd_byte(val, LCD_CHR);
 }
 
 // this allows use of any size string
 void ghpi::LCDDisplay::writeLine(const char *s){
     while ( *s ) lcd_byte(*(s++), LCD_CHR);
+}
+
+//pass 1,2,3 or 4 for the line parameter
+void ghpi::LCDDisplay::writeLine(const char *s, int line) { 
+  if (line <= 4) {  
+    lcdLoc(LCDLINES[line-1]);
+    writeLine(s);
+  }
 }
 
 void ghpi::LCDDisplay::lcd_byte(int bits, int mode){
@@ -119,29 +89,30 @@ void ghpi::LCDDisplay::lcd_byte(int bits, int mode){
 }
 
 void ghpi::LCDDisplay::lcd_toggle_enable(int bits)   {
-    // Toggle enable pin on LCD display
-    delayMicroseconds(500);
-    wiringPiI2CReadReg8(fd, (bits | ENABLE));
-    delayMicroseconds(500);
-    wiringPiI2CReadReg8(fd, (bits & ~ENABLE));
-    delayMicroseconds(500);
+  // Toggle enable pin on LCD display
+  delayMicroseconds(500);
+  wiringPiI2CReadReg8(fd, (bits | ENABLE));
+  delayMicroseconds(500);
+  wiringPiI2CReadReg8(fd, (bits & ~ENABLE));
+  delayMicroseconds(500);
 }
 
 void ghpi::LCDDisplay::lcd_init(){
-    fd = wiringPiI2CSetup(I2C_ADDR);
+  fd = wiringPiI2CSetup(I2C_ADDR);
   
-    // Initialise display
-    lcd_byte(0x33, LCD_CMD); // Initialise
-    lcd_byte(0x32, LCD_CMD); // Initialise
-    lcd_byte(0x06, LCD_CMD); // Cursor move direction
-    lcd_byte(0x0C, LCD_CMD); // 0x0F On, Blink Off
-    lcd_byte(0x28, LCD_CMD); // Data length, number of lines, font size
-    lcd_byte(0x01, LCD_CMD); // Clear display
-    delayMicroseconds(500);
+  // Initialise display
+  lcd_byte(0x33, LCD_CMD); // Initialise
+  lcd_byte(0x32, LCD_CMD); // Initialise
+  lcd_byte(0x06, LCD_CMD); // Cursor move direction
+  lcd_byte(0x0C, LCD_CMD); // 0x0F On, Blink Off
+  lcd_byte(0x28, LCD_CMD); // Data length, number of lines, font size
+  lcd_byte(0x01, LCD_CMD); // Clear display
+  delayMicroseconds(500);
 }
 
 ghpi::LCDDisplay::LCDDisplay() {
-    lcd_init();
+  lcd_init();
+  ClrLcd();
 }
 
 ghpi::LCDDisplay::~LCDDisplay() {

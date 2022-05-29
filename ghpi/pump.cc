@@ -4,7 +4,7 @@
 #include "pump.h"
 using ghpi::Pump;
 
-void Pump::ExecuteAction(Action action) {
+void Pump::ExecuteAction(ghpi::Action action) {
   switch(action.get_action_fn()) {
     case ActionFn::AFN_ON: {
       float* amount = (float*)action.get_additional_data();

@@ -8,8 +8,8 @@
 #include <boost/interprocess/mapped_region.hpp>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
-#include "operator.h"
-#include "action.h"
+#include <operator.h>
+#include <action.h>
 
 using namespace boost::interprocess;
 

@@ -14,6 +14,7 @@ namespace ghpi {
       std::map<std::string, float> Run(void* env_var) override;
       void RegisterAction(Action action);
       std::vector<Action> GetActionsByName(std::string name) const;
+      bool CanExecute(std::string action_name) const;
       virtual void ExecuteAction(Action action);
       void Print() override;
       Actuator(std::string name);

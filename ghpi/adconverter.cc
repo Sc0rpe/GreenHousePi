@@ -7,6 +7,10 @@ int ghpi::ADConverter::GetValueFromChannel(int channel) {
   return ReadAnalogData(channel, clk_pin_, mosi_pin_, miso_pin_, cs_pin_);
 }
 
+float ghpi::ADConverter::GetPercentValueFromChannel(int channel) {
+  return (GetValueFromChannel(channel)-min_val_) / (max_val_ - min_val_);
+}
+
 // Parameters channel( 0 - 7 ); clockPin, MOSIpin, MISOpin, channel select pin
 int ghpi::ADConverter::ReadAnalogData(int channel, int clk_pin, int mosi_pin, int miso_pin, int cs_pin) {
 	int value=0;
